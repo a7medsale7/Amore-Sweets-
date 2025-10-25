@@ -1,0 +1,184 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+@* **ملاحظة:** يجب إضافة الأنماط الموحدة (CSS) المذكورة أعلاه هنا
+    أو في ملف CSS عام للمشروع.
+*@
+<style>
+    /* 🎨 تحديد الثوابت اللونية للثيم */
+    :root {
+        --color-primary-dark: #6B4226; /* بني غامق */
+        --color-secondary-light: #F8BBD0; /* وردي فاتح */
+        --color-bg-light: #FFF8F0; /* خلفية الصفحة */
+        --color-accent-text: #E57373; /* لون نص مميز */
+    }
+
+    body {
+        background-color: var(--color-bg-light);
+        /* 💡 التعديل لإزالة شريط التمرير الأفقي */
+        overflow-x: hidden;
+    }
+
+    /* تحسين البطاقة (Card) لنموذج الدخول/التسجيل */
+    .auth-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border: none;
+        overflow: hidden;
+    }
+
+    .auth-card-header {
+        background-color: var(--color-primary-dark) !important;
+        color: white;
+        padding: 20px 0;
+        border-bottom: 5px solid var(--color-secondary-light);
+    }
+
+    .auth-card-body {
+        padding: 40px !important;
+    }
+
+    /* تنسيق زر الدخول الرئيسي */
+    .btn-auth-primary {
+        background-color: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+        color: white;
+        font-weight: 700;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-auth-primary:hover {
+            background-color: #5A351D; /* أغمق قليلاً */
+            border-color: #5A351D;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+    .auth-links a {
+        color: var(--color-primary-dark);
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+        .auth-links a:hover {
+            color: var(--color-accent-text);
+            text-decoration: underline;
+        }
+
+    .form-control:focus {
+        border-color: var(--color-secondary-light) !important;
+        box-shadow: 0 0 0 0.25rem rgba(248, 187, 208, 0.5) !important;
+    }
+
+</style>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-lg-10">
+        <div class="card auth-card">
+            <div class="card-header auth-card-header text-center">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <h2 class="py-1 text-white mb-0"><i class="bi bi-shield-lock-fill me-2"></i> Register - ADMIN PORTAL</h2>
+                        }
+                        else
+                        {
+                            <h2 class="py-1 text-white mb-0"><i class="bi bi-person-plus-fill me-2"></i> Create a New Sweets Account</h2>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body auth-card-body">
+                <div class="row pt-3">
+                    <div class="col-md-12">
+                        <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <h5 class="border-bottom pb-3 mb-4 text-secondary text-center">
+                                Please fill in the details below.
+                            </h5>
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                            <h6 class="text-muted mt-3 mb-3 border-bottom pb-1">Account Credentials</h6>
+                            <div class="form-floating mb-3 col-md-12">
+                                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3 col-md-6">
+                                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                                <label asp-for="Input.Password" class="ms-2 text-muted">Password</label>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3 col-md-6">
+                                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                                <label asp-for="Input.ConfirmPassword" class="ms-2 text-muted">Confirm Password</label>
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <h6 class="text-muted mt-3 mb-3 border-bottom pb-1">Personal & Contact Info</h6>
+                            <div class="form-floating mb-3 col-md-6">
+                                <input asp-for="Input.Name" class="form-control" placeholder="Full Name" />
+                                <label asp-for="Input.Name" class="ms-2 text-muted">Full Name</label>
+                                <span asp-validation-for="Input.Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3 col-md-6">
+                                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Phone Number" />
+                                <label asp-for="Input.PhoneNumber" class="ms-2 text-muted">Phone Number</label>
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <h6 class="text-muted mt-3 mb-3 border-bottom pb-1">Shipping Address</h6>
+                            <div class="form-floating mb-3 col-md-6">
+                                <input asp-for="Input.StreetAddress" class="form-control" placeholder="Street Address" />
+                                <label asp-for="Input.StreetAddress" class="ms-2 text-muted">Street Address</label>
+                                <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3 col-md-6">
+                                <input asp-for="Input.City" class="form-control" placeholder="City" />
+                                <label asp-for="Input.City" class="ms-2 text-muted">City</label>
+                                <span asp-validation-for="Input.City" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3 col-md-6">
+                                <input asp-for="Input.State" class="form-control" placeholder="State" />
+                                <label asp-for="Input.State" class="ms-2 text-muted">State</label>
+                                <span asp-validation-for="Input.State" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3 col-md-6">
+                                <input asp-for="Input.PostalCode" class="form-control" placeholder="Postal Code" />
+                                <label asp-for="Input.PostalCode" class="ms-2 text-muted">Postal Code</label>
+                                <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+                            </div>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="form-floating mb-3 col-md-6">
+                                    <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select border-primary">
+                                        <option disabled selected>-Select Role-</option>
+                                    </select>
+                                    <label asp-for="Input.Role" class="ms-2 text-muted">Assign Role</label>
+                                </div>
+                                <div class="col-md-6"></div>
+                            }
+
+                            <div class="col-12 mt-4">
+                                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-auth-primary">
+                                    <i class="bi bi-person-fill-add me-1"></i> Register Account
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

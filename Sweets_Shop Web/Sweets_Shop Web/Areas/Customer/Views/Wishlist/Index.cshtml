@@ -1,0 +1,137 @@
+﻿@model IEnumerable<Sweets.Models.Models.WishList>
+
+@{
+    ViewData["Title"] = "My Wishlist";
+}
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4">
+
+        <div class="card-header bg-primary bg-gradient text-light py-4 rounded-top-4">
+            <div class="row align-items-center px-4">
+                <div class="col-12 text-center">
+                    <h1 class="text-white display-6 mb-0">
+                        <i class="bi bi-heart-fill me-2 text-accent"></i> My Sweet Wishlist
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info text-center py-4 rounded-3 shadow-sm" role="alert">
+                    <h4 class="alert-heading"><i class="bi bi-info-circle-fill me-2"></i> Your Wishlist is Empty!</h4>
+                    <p class="mb-0">It looks like you haven't added any sweet treats yet. Start exploring our boutique!</p>
+                    <hr>
+                    <a asp-area="Customer" asp-controller="Product" asp-action="Index"
+                       class="btn btn-primary bg-gradient mt-3 text-white">
+                        <i class="bi bi-shop me-1"></i> Start Shopping
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="mb-5 text-center text-md-start">
+                    <a asp-area="Customer" asp-controller="Product" asp-action="Index"
+                       class="btn btn-outline-primary text-uppercase px-4 py-2 rounded-pill">
+                        <i class="bi bi-arrow-left me-1"></i> Continue Shopping
+                    </a>
+                </div>
+
+                <div class="list-group list-group-flush">
+
+                    @foreach (var item in Model)
+                    {
+                        var product = item.Product;
+                        var firstImage = product?.ProductImages?.FirstOrDefault();
+
+                        <div class="list-group-item p-3 mb-3 border rounded-3 bg-card-custom shadow-sm" data-aos="fade-up">
+                            <div class="row g-3 align-items-center">
+
+                                <!-- Product Image -->
+                                <div class="col-lg-2 d-none d-lg-block text-center">
+                                    <img src="@(firstImage != null ? firstImage.ImageUrl : "https://placehold.co/100x120/E3B5A7/5C4033/png?text=No+Image")"
+                                         alt="@(product?.Name ?? "Unknown Product")"
+                                         class="img-fluid rounded-3 shadow-sm border border-secondary"
+                                         style="max-height: 120px; object-fit: cover;" />
+                                </div>
+
+                                <!-- Product Info -->
+                                <div class="col-12 col-lg-6">
+                                    <h4 class="text-primary mb-1">
+                                        <strong>@(product?.Name ?? "Unknown Product")</strong>
+                                    </h4>
+                                    <h6 class="text-secondary fw-normal mb-2">@product?.Category?.Name</h6>
+
+                                    <h5 class="fw-bold d-lg-none mt-2 text-accent">
+                                        @(product != null ? product.Price.ToString("C") : "")
+                                    </h5>
+
+                                    <div class="d-none d-md-block text-muted small mt-2">
+                                        @if (!string.IsNullOrEmpty(product?.Description))
+                                        {
+                                @Html.Raw(product.Description.Length > 100
+                                                                ? product.Description.Substring(0, 100) + "..."
+                                                                : product.Description)
+                                                                }
+                                        else
+                                        {
+                                            <span>No description available.</span>
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- Price + Buttons -->
+                                <div class="col-12 col-lg-4 text-center text-lg-end">
+                                    <div class="row g-2">
+
+                                        <div class="col-12 d-none d-lg-block">
+                                            <h4 class="fw-bolder text-accent mb-3">
+                                                @(product != null ? product.Price.ToString("C") : "")
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-12 d-flex justify-content-center justify-content-lg-end">
+                                            @if (product != null)
+                                            {
+                                                <form asp-action="MoveToCart" method="post" class="d-inline me-2">
+                                                    <input type="hidden" name="wishlistId" value="@item.Id" />
+                                                    <button type="submit" class="btn btn-success bg-gradient py-2 px-3 btn-sm shadow-sm"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Move to Shopping Cart">
+                                                        <i class="bi bi-cart-plus-fill me-1"></i> Add to Cart
+                                                    </button>
+                                                </form>
+                                            }
+
+                                            <form asp-action="Remove" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-danger bg-gradient py-2 px-3 btn-sm shadow-sm"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Remove from Wishlist">
+                                                    <i class="bi bi-trash-fill"></i> Remove
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Initialize Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
+}

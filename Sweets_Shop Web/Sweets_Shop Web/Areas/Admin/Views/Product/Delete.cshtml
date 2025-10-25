@@ -1,0 +1,21 @@
+﻿@model Sweets.Models.Product
+
+<h2 style="color:#6B4226;">Delete Product</h2>
+
+<form asp-action="Delete" method="post" class="p-4 rounded shadow-sm" style="background-color:#FFF0D9;">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="alert alert-warning">Are you sure you want to delete this product?</div>
+
+    <div class="mb-3">
+        <strong>Name:</strong> @Model.Name
+    </div>
+
+    <div class="mb-3">
+        <strong>Image:</strong><br />
+@*         <img src="@Model.ImageUrl" width="100" class="rounded" />
+ *@    </div>
+
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

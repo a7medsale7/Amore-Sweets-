@@ -1,0 +1,188 @@
+wwwroot\css\custom.css
+wwwroot\css\site.css
+wwwroot\favicon.ico
+wwwroot\images\categories\000a17f1-64b6-41e2-a734-65a26000d647.webp
+wwwroot\images\categories\06c23850-1642-4f06-a0ed-31608d76f6b9.jpg
+wwwroot\images\categories\3ef83ce7-5730-4637-a51c-acbd469a8d96.jpeg
+wwwroot\images\categories\83f21121-c25d-4eff-9a67-85dc3f954b24.png
+wwwroot\images\categories\85d3657e-961c-4e21-ad72-ce5b46924202.webp
+wwwroot\images\categories\Brownies.jpg
+wwwroot\images\categories\Cakes.jpg
+wwwroot\images\categories\Cheesecakes.jpg
+wwwroot\images\categories\Cookies.jpg
+wwwroot\images\categories\Cupcakes.jpg
+wwwroot\images\categories\Donuts.jpg
+wwwroot\images\categories\f4030812-86e0-46fb-8ad8-c65ea743f4de.ico
+wwwroot\images\categories\Macarons.jpg
+wwwroot\images\categories\Muffins.jpg
+wwwroot\images\categories\Pastries.jpg
+wwwroot\images\categories\Tarts & Pies.jpg
+wwwroot\images\Classic Eclair.jpg
+wwwroot\images\Coffee and sweets.jpg
+wwwroot\images\cristiano ronaldo.jpg
+wwwroot\images\Cupcakes close-up.jpg
+wwwroot\images\Dark Chocolate Truffles.jpg
+wwwroot\images\Founding Baker in a traditional kitchen.jpg
+wwwroot\images\Gourmet Magazine for sweets shop.jpeg
+wwwroot\images\istockphoto-537172279-612x612.jpg
+wwwroot\images\istockphoto-921788748-2048x2048.jpg
+wwwroot\images\kuan.jpg
+wwwroot\images\logo-baker.jpg
+wwwroot\images\logo-gourmet.jpg
+wwwroot\images\logo-sweetlife.jpg
+wwwroot\images\logo-test.ico
+wwwroot\images\logo-test.jpg
+wwwroot\images\mohammed saleh.jpg
+wwwroot\images\Pastry display.jpg
+wwwroot\images\Pistachio Croissant.jpg
+wwwroot\images\products\Brownies\Classic Fudge Brownie 1.jpg
+wwwroot\images\products\Brownies\Classic Fudge Brownie 2.jpg
+wwwroot\images\products\Brownies\Mocha Brownie 1.jpg
+wwwroot\images\products\Brownies\Mocha Brownie 2.jpg
+wwwroot\images\products\Brownies\Walnut Brownie 1.jpg
+wwwroot\images\products\Brownies\Walnut Brownie 2.jpg
+wwwroot\images\products\Brownies\White Chocolate Blondie 1.jpg
+wwwroot\images\products\Brownies\White Chocolate Blondie 2.jpg
+wwwroot\images\products\cakes\Caramel Crunch Cake 1.jpg
+wwwroot\images\products\cakes\Caramel Crunch Cake 2.jpg
+wwwroot\images\products\cakes\Classic Chocolate Cake 1.jpg
+wwwroot\images\products\cakes\Classic Chocolate Cake 2.jpg
+wwwroot\images\products\cakes\Classic Chocolate Cake 3.jpg
+wwwroot\images\products\cakes\Classic Chocolate Cake 4.jpg
+wwwroot\images\products\cakes\Lemon Zest Cake 1.jpg
+wwwroot\images\products\cakes\Lemon Zest Cake 2.jpg
+wwwroot\images\products\cakes\Lemon Zest Cake 3.jpg
+wwwroot\images\products\cakes\Oreo Delight Cake 1.jpg
+wwwroot\images\products\cakes\Oreo Delight Cake 2.jpg
+wwwroot\images\products\cakes\Oreo Delight Cake 3.jpg
+wwwroot\images\products\cakes\Red Velvet Cake 1.jpg
+wwwroot\images\products\cakes\Red Velvet Cake 2.jpg
+wwwroot\images\products\cakes\Red Velvet Cake 3.jpg
+wwwroot\images\products\cakes\Red Velvet Cake 4.jpg
+wwwroot\images\products\cakes\Strawberry Bliss Cake 1.jpg
+wwwroot\images\products\cakes\Strawberry Bliss Cake 2.jpg
+wwwroot\images\products\cakes\Strawberry Bliss Cake 3.jpg
+wwwroot\images\products\cakes\Strawberry Bliss Cake 4.jpg
+wwwroot\images\products\cakes\Vanilla Dream Cake 1.jpg
+wwwroot\images\products\cakes\Vanilla Dream Cake 2.jpg
+wwwroot\images\products\cakes\Vanilla Dream Cake 3.jpg
+wwwroot\images\products\cheesecake\Blueberry Cheesecake 1.jpg
+wwwroot\images\products\cheesecake\Blueberry Cheesecake 2.jpg
+wwwroot\images\products\cheesecake\Classic New York Cheesecake 1.jpg
+wwwroot\images\products\cheesecake\Classic New York Cheesecake 2.jpg
+wwwroot\images\products\cheesecake\Oreo Cheesecake 1.jpg
+wwwroot\images\products\cheesecake\Oreo Cheesecake 2.jpg
+wwwroot\images\products\cookies\Chocolate Chip Cookie 1.jpg
+wwwroot\images\products\cookies\Chocolate Chip Cookie 2.jpg
+wwwroot\images\products\cookies\Oatmeal Raisin Cookie 1.jpg
+wwwroot\images\products\cookies\Oatmeal Raisin Cookie 2.jpg
+wwwroot\images\products\cookies\White Chocolate Cookie 1.jpg
+wwwroot\images\products\cookies\White Chocolate Cookie 2.jpg
+wwwroot\images\products\croissant\Butter Croissant 1.jpg
+wwwroot\images\products\croissant\Butter Croissant 2.jpg
+wwwroot\images\products\Cupcakes\Chocolate Cupcake 1.jpg
+wwwroot\images\products\Cupcakes\Chocolate Cupcake 2.jpg
+wwwroot\images\products\Cupcakes\Chocolate Cupcake 3.jpg
+wwwroot\images\products\Cupcakes\Red Velvet Cupcake 1.jpg
+wwwroot\images\products\Cupcakes\Red Velvet Cupcake 2.jpg
+wwwroot\images\products\Cupcakes\Red Velvet Cupcake 3.jpg
+wwwroot\images\products\Cupcakes\Strawberry Cream Cupcake 1.jpg
+wwwroot\images\products\Cupcakes\Strawberry Cream Cupcake 2.jpg
+wwwroot\images\products\Cupcakes\Strawberry Cream Cupcake 3.jpg
+wwwroot\images\products\Cupcakes\Vanilla Cupcake 1.jpg
+wwwroot\images\products\Cupcakes\Vanilla Cupcake 2.jpg
+wwwroot\images\products\Cupcakes\Vanilla Cupcake 3.jpg
+wwwroot\images\products\donuts\Chocolate Frosted Donut 1.jpg
+wwwroot\images\products\donuts\Chocolate Frosted Donut 2.jpg
+wwwroot\images\products\donuts\Cinnamon Sugar Donut 1.jpg
+wwwroot\images\products\donuts\Cinnamon Sugar Donut 2.jpg
+wwwroot\images\products\donuts\Classic Glazed Donut 1.jpg
+wwwroot\images\products\donuts\Classic Glazed Donut 2.jpg
+wwwroot\images\products\donuts\Strawberry Donut 1.jpg
+wwwroot\images\products\donuts\Strawberry Donut 2.jpg
+wwwroot\images\products\Macarons\Chocolate Macaron 1.jpg
+wwwroot\images\products\Macarons\Chocolate Macaron 2.jpg
+wwwroot\images\products\Macarons\Coconut Macaron 1.jpg
+wwwroot\images\products\Macarons\Coconut Macaron 2.jpg
+wwwroot\images\products\Macarons\Coffee Macaron 1.jpg
+wwwroot\images\products\Macarons\Coffee Macaron 2.jpg
+wwwroot\images\products\Macarons\Vanilla Macaron 1.jpg
+wwwroot\images\products\Macarons\Vanilla Macaron 2.jpg
+wwwroot\images\products\muffin\Blueberry Muffin 1.jpg
+wwwroot\images\products\muffin\Blueberry Muffin 2.jpg
+wwwroot\images\products\muffin\Cranberry Muffin 1.jpg
+wwwroot\images\products\muffin\Cranberry Muffin 2.jpg
+wwwroot\images\products\Pie &Turnover\Apple Turnover 1.jpg
+wwwroot\images\products\Pie &Turnover\Apple Turnover 2.jpg
+wwwroot\images\products\Pie &Turnover\Blueberry Pie 1.jpg
+wwwroot\images\products\Pie &Turnover\Blueberry Pie 2.jpg
+wwwroot\images\products\Pie &Turnover\Classic Apple Pie 1.jpg
+wwwroot\images\products\Pie &Turnover\Classic Apple Pie 2.jpg
+wwwroot\images\products\tarts\Strawberry Custard Tart 1.jpg
+wwwroot\images\products\tarts\Strawberry Custard Tart 2.jpg
+wwwroot\images\Red Velvet Cake.jpg
+wwwroot\images\Salted Caramel Tart.jpg
+wwwroot\images\Sweets Confirmation.jpg
+wwwroot\js\category.js
+wwwroot\js\order.js
+wwwroot\js\product.js
+wwwroot\js\site.js
+wwwroot\js\User.js
+wwwroot\js\vecteezy_cupcake-logo-sweet-cake-logo-cake-shop-logo-cake-bakery_7723911_330.zip
+wwwroot\lib\bootstrap\dist\css\bootstrap.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+wwwroot\lib\bootstrap\LICENSE
+wwwroot\lib\jquery\dist\jquery.js
+wwwroot\lib\jquery\dist\jquery.min.js
+wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\lib\jquery\LICENSE.txt
+wwwroot\lib\jquery-validation\dist\additional-methods.js
+wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+wwwroot\lib\jquery-validation\LICENSE.md
+wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
+wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
+wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt

@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "dgSpecHash": "2ihw/8z00qY=",
+  "success": true,
+  "projectFilePath": "E:\\Sweets Shop(1)\\Sweets_Shop Web\\Sweets.Utility\\Sweets.Utility.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\NewVision\\.nuget\\packages\\bouncycastle.cryptography\\2.6.1\\bouncycastle.cryptography.2.6.1.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\mailkit\\4.14.1\\mailkit.4.14.1.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\8.0.18\\microsoft.aspnetcore.cryptography.internal.8.0.18.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\8.0.18\\microsoft.aspnetcore.cryptography.keyderivation.8.0.18.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\8.0.18\\microsoft.aspnetcore.identity.ui.8.0.18.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\8.0.0\\microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.1\\microsoft.extensions.dependencyinjection.8.0.1.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\8.0.0\\microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.fileproviders.embedded\\8.0.18\\microsoft.extensions.fileproviders.embedded.8.0.18.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.identity.core\\8.0.18\\microsoft.extensions.identity.core.8.0.18.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.identity.stores\\8.0.18\\microsoft.extensions.identity.stores.8.0.18.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.logging\\8.0.1\\microsoft.extensions.logging.8.0.1.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\mimekit\\4.14.0\\mimekit.4.14.0.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\system.formats.asn1\\8.0.1\\system.formats.asn1.8.0.1.nupkg.sha512",
+    "C:\\Users\\NewVision\\.nuget\\packages\\system.security.cryptography.pkcs\\8.0.1\\system.security.cryptography.pkcs.8.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

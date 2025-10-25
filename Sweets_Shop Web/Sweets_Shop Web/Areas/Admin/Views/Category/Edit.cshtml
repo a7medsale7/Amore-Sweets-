@@ -1,0 +1,144 @@
+﻿@model Sweets.Models.Category
+
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<style>
+    /* تم استخدام نفس أنماط الـ Add لتوحيد الشكل */
+    :root {
+        --color-primary-dark: #6B4226;
+        --color-secondary-light: #F8BBD0;
+        --color-accent: #FFF0D9;
+    }
+
+    .form-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+    }
+
+    .card-title-header {
+        background-color: var(--color-secondary-light); /* تغيير اللون للتمييز عن الإضافة */
+        color: var(--color-primary-dark);
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+        font-weight: bold;
+    }
+
+    .input-field {
+        border: 1px solid #ddd;
+        border-radius: 8px !important;
+        transition: border-color 0.3s;
+    }
+
+        .input-field:focus {
+            border-color: var(--color-secondary-light) !important;
+            box-shadow: 0 0 0 0.25rem rgba(248, 187, 208, 0.5) !important;
+        }
+
+    .btn-update {
+        background-color: #28a745; /* استخدام الأخضر للتحديث */
+        border-color: #28a745;
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+        .btn-update:hover {
+            background-color: #1e7e34;
+            border-color: #1e7e34;
+        }
+
+    .section-box {
+        background-color: var(--color-accent);
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px dashed var(--color-primary-dark);
+    }
+
+    .current-img-box {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+</style>
+
+<div class="card form-card my-4">
+    <div class="card-header card-title-header py-3">
+        <h2 class="text-center mb-0">
+            <i class="bi bi-pencil-square me-2"></i> Edit Category: @Model.Name
+        </h2>
+    </div>
+
+    <div class="card-body p-4 p-md-5">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data" class="row g-4">
+            <input asp-for="Id" type="hidden" />
+            <div asp-validation-summary="All" class="text-danger mb-4 fw-bold"></div>
+
+            <div class="col-md-7">
+                <div class="section-box">
+                    <h5 class="text-secondary mb-4"><i class="bi bi-info-circle-fill me-1"></i> Update Details</h5>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Name" class="form-control input-field" placeholder="Category Name" />
+                        <label asp-for="Name">Name</label>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label text-muted mb-2">Description</label>
+                        <textarea asp-for="Description" class="form-control input-field" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check form-switch pt-2">
+                        <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" />
+                        <label asp-for="IsActive" class="form-check-label fw-bold">Is Active</label>
+                    </div>
+                </div>
+
+                <div class="row pt-4">
+                    <div class="col-6 col-md-5">
+                        <button type="submit" class="btn btn-update form-control shadow-sm fw-bold">
+                            <i class="bi bi-arrow-repeat me-1"></i> Update
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-5">
+                        <a asp-action="Index" class="btn btn-outline-secondary border form-control shadow-sm fw-bold">
+                            <i class="bi bi-arrow-left-circle-fill me-1"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="section-box h-100">
+                    <h5 class="text-secondary mb-4"><i class="bi bi-image-fill me-1"></i> Image Management</h5>
+
+                    <div class="current-img-box text-center mb-4">
+                        <p class="text-muted fw-bold mb-2">Current Image</p>
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" alt="@Model.Name"
+                                 class="img-fluid rounded shadow-sm border"
+                                 style="max-height: 180px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <p class="text-muted fst-italic">No image uploaded.</p>
+                        }
+                    </div>
+
+                    <label asp-for="ImageFile" class="form-label fw-bold mb-2">Change Image (Optional)</label>
+                    <input asp-for="ImageFile" type="file" class="form-control input-field" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

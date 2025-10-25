@@ -1,0 +1,218 @@
+﻿@model IEnumerable<Sweets.Models.Product>
+
+@{
+    ViewData["Title"] = "Manage Products";
+}
+
+<style>
+    /* 🎨 تحديد الثوابت اللونية */
+    :root {
+        --color-primary-dark: #6B4226; /* بني غامق */
+        --color-secondary-light: #F8BBD0; /* وردي فاتح */
+        --color-bg-table-alt: #FFF0D9; /* خلفية صفوف متبادلة (كريمي) */
+        /* 💡 التعديل لزيادة وضوح رأس الجدول */
+        --color-header-bg-bright: #FEE7D7; /* لون خلفية فاتح */
+        --color-header-text: #6B4226; /* لون النص بني غامق */
+
+        --color-action-success: #198754;
+        --color-action-info: #0d6efd;
+        --color-action-danger: #dc3545;
+        --color-text-muted: #6c757d;
+    }
+
+    body {
+        background-color: #FFF8F0;
+    }
+
+    /* ➡️ تصميم الصفحة والعنوان */
+    .page-title {
+        color: var(--color-primary-dark);
+        font-weight: 800;
+        border-bottom: 3px solid var(--color-secondary-light);
+        padding-bottom: 12px;
+        display: inline-block;
+        font-size: 2rem;
+    }
+
+    /* ➕ زر الإضافة */
+    .btn-add-new {
+        background-color: var(--color-secondary-light) !important;
+        color: var(--color-primary-dark) !important;
+        font-weight: 700;
+        border: 1px solid var(--color-primary-dark);
+        border-radius: 10px;
+        padding: 10px 25px;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* ظل أوضح */
+    }
+
+        .btn-add-new:hover {
+            background-color: var(--color-primary-dark) !important;
+            color: #fff !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    /* 📊 تصميم الجدول */
+    #tblData {
+        background-color: #ffffff;
+        border-radius: 15px; /* حواف أكثر استدارة للجدول ككل */
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); /* ظل أعمق */
+        border: none !important;
+        table-layout: fixed;
+    }
+
+        /* <thead> رأس الجدول - تطبيق الأنماط الجديدة */
+        #tblData thead {
+            background-color: var(--color-header-bg-bright); /* خلفية فاتحة */
+            color: var(--color-header-text); /* نص غامق */
+            font-weight: 700;
+        }
+
+        #tblData th {
+            padding: 18px 15px; /* مسافة داخلية أكبر */
+            font-size: 0.95rem;
+            color: var(--color-header-text); /* تأكيد لون النص الغامق */
+            text-align: center;
+            text-transform: uppercase; /* لزيادة الاحترافية */
+            border-bottom: 2px solid rgba(107, 66, 38, 0.2) !important; /* فصل أوضح بين الرأس والجسم */
+        }
+
+        /* <tbody> جسم الجدول */
+        #tblData tbody tr:nth-child(even) {
+            background-color: var(--color-bg-table-alt);
+        }
+
+        #tblData tbody tr:hover {
+            background-color: #FEE7D7; /* تأثير أوضح عند التحويم */
+        }
+
+        #tblData td {
+            vertical-align: middle;
+            padding: 15px 15px; /* زيادة المسافة الداخلية لخلايا البيانات */
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+            /* 🎯 تعديل محاذاة اسم المنتج ليناسب المساحة الأكبر */
+            /* ✅ تم حذف التعديل السابق لكي يكون محاذاة البيانات متناسقة مع محاذاة الرأس (الذي أصبح في المنتصف) */
+            #tblData td:first-child {
+                text-align: center; /* تم التعديل هنا ليتوسط النص */
+                font-weight: 600;
+            }
+
+    /* ⚙️ أزرار الإجراءات */
+    .btn-actions-group .btn {
+        width: 40px; /* حجم أكبر للأزرار */
+        height: 40px;
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    .status-badge {
+        font-size: 0.85rem; /* حجم أكبر قليلاً لشارة الحالة */
+        padding: 6px 10px;
+        font-weight: 600;
+    }
+
+    /* تحسين شكل الفلتر */
+    .dataTables_wrapper .dataTables_filter {
+        text-align: left !important;
+        margin-bottom: 1.5rem;
+    }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 8px;
+            border: 1px solid var(--color-primary-dark);
+            padding: 8px 15px;
+            width: 300px;
+            transition: box-shadow 0.3s;
+        }
+</style>
+
+<div class="container p-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="page-title">
+            <i class="bi bi-box-seam-fill me-2"></i> Products Management
+        </h2>
+        <a asp-action="Add" class="btn btn-add-new">
+            <i class="bi bi-plus-circle-fill me-1"></i> Add New Product
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table id="tblData" class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="width:18%; text-align:center;">Name</th>
+                    <th style="width:10%;">Category</th>
+                    <th style="width:10%;">Price</th>
+                    <th style="width:10%;">Discount</th>
+                    <th style="width:10%;">Stock</th>
+                    <th style="width:10%;">Available</th>
+                    <th style="width:12%;">Created</th>
+                    <th style="width:10%;">Actions</th>
+                    <th style="width:10%;">Special</th> <!-- ✅ العمود المفقود -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="text-align:center;"><strong style="color:var(--color-primary-dark);">@item.Name</strong></td>
+                        <td>@item.Category?.Name</td>
+                        <td><strong class="text-success">@item.Price.ToString("C")</strong></td>
+                        <td><span class="badge @(item.Discount > 0 ? "bg-warning text-dark" : "bg-secondary") status-badge">@item.Discount%</span></td>
+                        <td>@item.StockQuantity</td>
+                        <td>
+                            @if (item.IsAvailable)
+                            {
+                                <span class="badge bg-success status-badge"><i class="bi bi-check-circle-fill"></i> Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger status-badge"><i class="bi bi-x-circle-fill"></i> No</span>
+                            }
+                        </td>
+                        <td><span class="text-muted-no-img">@item.CreatedAt.ToString("yyyy-MM-dd")</span></td>
+                        <td>
+                            <div class="btn-group btn-actions-group" role="group">
+                                <a asp-action="Edit" asp-route-slug="@item.Slug" class="btn btn-sm btn-success" title="Edit">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-slug="@item.Slug" class="btn btn-sm btn-info" title="Details">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="@item.Id" title="Delete">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <form asp-action="ToggleSpecial" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                @if (Sweets.Utility.SpecialProductsCache.IsSpecial(item.Id))
+                                {
+                                    <button type="submit" class="btn btn-warning btn-sm">Unmark Special</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-success btn-sm">Mark Special</button>
+                                }
+                            </form>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/product.js"></script>
+}

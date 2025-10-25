@@ -1,0 +1,41 @@
+﻿@model Sweets.Models.Models.Feedback
+
+@{
+    ViewData["Title"] = "Add Feedback";
+}
+
+<div class="container my-5">
+    <div class="card shadow p-4">
+        <h2 class="text-center mb-4">Leave Your Feedback</h2>
+
+        <form asp-action="Create" method="post">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Your Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Comment" class="form-label"></label>
+                <textarea asp-for="Comment" class="form-control" rows="4" placeholder="Your Comment"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Rating" class="form-label"></label>
+                <select asp-for="Rating" class="form-select">
+                    @for (int i = 5; i >= 1; i--)
+                    {
+                        <option value="@i">@i Stars</option>
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Submit Feedback</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

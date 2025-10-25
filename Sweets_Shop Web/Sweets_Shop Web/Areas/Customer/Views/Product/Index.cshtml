@@ -1,0 +1,247 @@
+﻿@model IEnumerable<Sweets.Models.Product>
+
+@{
+    ViewData["Title"] = "Our Sweet Collection";
+}
+
+<style>
+    :root {
+        --color-primary: #A0522D;
+        --color-secondary: #F6C1B5;
+        --color-tertiary: #5C4033;
+        --color-bg-light: #FFF9F7;
+    }
+
+    body {
+        background-color: var(--color-bg-light);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .product-header {
+        font-family: 'Playfair Display', serif;
+        color: var(--color-tertiary);
+        font-weight: 800;
+        letter-spacing: 1.5px;
+    }
+
+    .product-card {
+        border: 1px solid rgba(0,0,0,0.05);
+        border-radius: 20px;
+        background-color: #fff;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+    .carousel-inner img {
+        height: 260px;
+        width: 100%;
+        object-fit: cover;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+    .category-tag {
+        background-color: var(--color-secondary);
+        color: var(--color-tertiary);
+        border-radius: 25px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 6px 14px;
+        margin-bottom: 10px;
+        align-self: flex-start;
+    }
+
+    .product-price {
+        font-weight: 900;
+        font-size: 1.6rem;
+        color: var(--color-primary);
+        line-height: 1;
+        margin-top: 5px;
+    }
+
+    .btn-add-to-cart {
+        background: var(--color-primary);
+        color: #fff;
+        font-weight: 700;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 0;
+        box-shadow: 0 4px 10px rgba(160,82,45,0.4);
+        transition: 0.3s;
+    }
+
+        .btn-add-to-cart:hover {
+            background: var(--color-tertiary);
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(92,64,51,0.6);
+        }
+
+    .btn-wishlist {
+        border: 2px solid var(--color-secondary);
+        background-color: #fff;
+        color: var(--color-primary);
+        border-radius: 12px;
+        padding: 10px;
+        transition: 0.3s;
+    }
+
+        .btn-wishlist:hover {
+            background-color: var(--color-secondary);
+            color: var(--color-tertiary);
+            transform: scale(0.98);
+            border-color: var(--color-primary);
+        }
+
+    .bi-heart-fill {
+        color: #E34A6F;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+</style>
+
+<section class="container my-5 py-3">
+    <h1 class="text-center mb-5 product-header display-5" data-aos="fade-down">
+        <i class="bi bi-shop me-2"></i> Our Sweet Collection
+    </h1>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning text-center p-5 shadow-sm rounded-3" role="alert" style="border-left: 5px solid var(--color-primary);">
+            <h4 class="alert-heading" style="color: var(--color-primary);">No Products Available! 🙁</h4>
+            <p class="mb-0">We’re currently preparing our delicious treats — please check back soon or contact us for custom orders.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-5">
+            @foreach (var product in Model)
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="product-card">
+
+                        <div id="carousel-@product.Id" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                            <div class="carousel-inner">
+                                @{
+                                    var images = product.ProductImages?.Select(i => i.ImageUrl).ToList();
+                                    bool hasMultipleImages = images != null && images.Count > 1;
+
+                                    // إذا لم توجد أي صورة، استخدم الصورة الافتراضية
+                                    if (images == null || !images.Any())
+                                    {
+                                        images = new List<string> { "/images/default_sweet_placeholder.jpg" };
+                                    }
+                                }
+
+
+                                @for (int i = 0; i < images.Count; i++)
+                                {
+                                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                                        <img src="@images[i]" class="d-block w-100" alt="@product.Name Image @(i + 1)" loading="lazy" />
+                                    </div>
+                                }
+                            </div>
+
+                            @if (hasMultipleImages)
+                            {
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@product.Id" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-@product.Id" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            }
+                        </div>
+
+                        <div class="card-body d-flex flex-column">
+                            @if (product.Category != null)
+                            {
+                                <span class="category-tag">@product.Category.Name</span>
+                            }
+
+                        <h5 class="fw-bold mb-1 text-truncate" title="@product.Name" style="color: var(--color-tertiary);">
+                            @product.Name
+                        </h5>
+
+                        <p class="product-price mb-3">
+                            @product.Price.ToString("C", System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+                            <small class="text-muted fst-italic fw-normal" style="font-size: 0.9rem;">/ unit</small>
+                        </p>
+
+                        <p class="text-muted flex-grow-1 mb-4" style="font-size: 0.95rem; min-height: 45px;">
+                            @(string.IsNullOrWhiteSpace(product.Description)
+                                                    ? "A delectable sweet treat from our premium collection."
+                                                    : (product.Description.Length > 80
+                                                    ? product.Description.Substring(0, 80) + "..."
+                                                    : product.Description))
+                    </p>
+
+                            <div class="mt-auto d-flex gap-2">
+                                <form asp-area="Customer" asp-controller="Home" asp-action="Details" method="post" class="flex-grow-1" onsubmit="return addToCart(event, @product.Id, '@product.Name.Replace("'", "\\'")')">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="ProductId" value="@product.Id" />
+                                    <input type="hidden" name="Count" value="1" />
+                                    <input type="hidden" name="categorySlug" value="@product.Category?.Slug" />
+                                    <button type="submit" class="btn btn-add-to-cart w-100" title="Add to Cart">
+                                        <i class="bi bi-cart-plus me-1"></i> Add to Cart
+                                    </button>
+                                </form>
+
+                                <form asp-area="Customer" asp-controller="Home" asp-action="AddToWishList" method="post" onsubmit="return addToWishlist(event, @product.Id, '@product.Name.Replace("'", "\\'")')">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="productId" value="@product.Id" />
+                                    <input type="hidden" name="categorySlug" value="@product.Category?.Slug" />
+                                    <button type="submit" class="btn btn-wishlist" title="Add to Wishlist">
+                                        <i class="bi bi-heart"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+        </div>
+    }
+</section>
+
+@section Scripts {
+    <script>
+        function addToCart(event, id, name) {
+            event.preventDefault();
+            console.log(`Product ${id} - ${name} submitted to cart controller.`);
+            event.target.submit(); // إرسال الفورم بعد التأثير
+        }
+
+        function addToWishlist(event, id, name) {
+            event.preventDefault();
+            const icon = event.currentTarget.querySelector('i');
+            icon.classList.toggle('bi-heart-fill');
+            icon.classList.toggle('bi-heart');
+            console.log(`Product ${id} - ${name} submitted to wishlist controller.`);
+            setTimeout(() => {
+                event.target.submit();
+            }, 100);
+        }
+
+        // Bootstrap Carousel Initialization
+        var carousels = document.querySelectorAll('.carousel');
+        carousels.forEach(function(c) {
+            new bootstrap.Carousel(c, {
+                interval: 5000,
+                pause: 'hover'
+            });
+        });
+    </script>
+}

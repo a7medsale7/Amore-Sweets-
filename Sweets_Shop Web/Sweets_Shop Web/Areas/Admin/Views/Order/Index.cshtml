@@ -1,0 +1,51 @@
+﻿@using Sweets.Utility
+@{
+    ViewData["Title"] = "Orders Management";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<div class="container my-5">
+    <div class="card shadow border-0">
+        <div class="card-header bg-gradient py-4 text-center" style="background-color:#6B4226;">
+            <h2 class="text-white mb-3">Orders Management</h2>
+
+            <!-- ✅ Status Filters -->
+            <div class="d-flex justify-content-center flex-wrap gap-2">
+                <button class="btn btn-light filter-btn active" data-status="all">All</button>
+                <button class="btn btn-outline-warning filter-btn" data-status="@SD.StatusPending">@SD.StatusPending</button>
+                <button class="btn btn-outline-primary filter-btn" data-status="@SD.StatusApproved">@SD.StatusApproved</button>
+                <button class="btn btn-outline-info filter-btn" data-status="@SD.StatusInProcess">In Process</button>
+                <button class="btn btn-outline-success filter-btn" data-status="@SD.StatusShipped">@SD.StatusShipped</button>
+                <button class="btn btn-outline-danger filter-btn" data-status="@SD.StatusCancelled">@SD.StatusCancelled</button>
+                <button class="btn btn-outline-secondary filter-btn" data-status="@SD.StatusRefunded">@SD.StatusRefunded</button>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table id="tblData" class="table table-hover table-bordered align-middle text-center" style="width:100%">
+                <thead class="table-light">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Order Date</th>
+                        <th>Total</th>
+                        <th>Order Status</th>
+                        <th>Payment Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/order.js"></script>
+}

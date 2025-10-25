@@ -1,0 +1,141 @@
+﻿@model Sweets.Models.Category
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<style>
+    /* تم استخدام نفس أنماط الـ Add/Edit لتوحيد الشكل */
+    :root {
+        --color-primary-dark: #6B4226;
+        --color-secondary-light: #F8BBD0;
+        --color-accent: #FFF0D9;
+    }
+
+    .details-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+    }
+
+    .card-title-header {
+        background-color: var(--color-primary-dark);
+        color: white;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+    }
+
+    .section-box {
+        background-color: var(--color-accent);
+        padding: 25px;
+        border-radius: 10px;
+        border: 1px solid var(--color-secondary-light);
+    }
+
+    .dl-horizontal dt {
+        color: var(--color-primary-dark);
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .dl-horizontal dd {
+        margin-bottom: 8px;
+        color: #495057;
+    }
+
+    .active-status-yes {
+        color: #198754;
+        font-weight: bold;
+    }
+
+    .active-status-no {
+        color: #dc3545;
+        font-weight: bold;
+    }
+</style>
+
+<div class="card details-card my-4">
+    <div class="card-header card-title-header py-3">
+        <h2 class="text-center mb-0">
+            <i class="bi bi-info-circle-fill me-2"></i> Category Details
+        </h2>
+    </div>
+
+    <div class="card-body p-4 p-md-5">
+        <div class="row g-4">
+            <div class="col-md-7">
+                <div class="section-box">
+                    <h5 class="text-secondary mb-4 pb-2 border-bottom border-secondary-subtle">
+                        <i class="bi bi-card-text me-1"></i> General Information
+                    </h5>
+
+                    <dl class="row dl-horizontal">
+                        <dt class="col-sm-4">Name</dt>
+                        <dd class="col-sm-8">@Model.Name</dd>
+
+                        <dt class="col-sm-4">Slug</dt>
+                        <dd class="col-sm-8">@Model.Slug</dd>
+
+                        <dt class="col-sm-4">Description</dt>
+                        <dd class="col-sm-8 text-wrap">@Html.Raw(Model.Description)</dd>
+
+                        <dt class="col-sm-4">Item Count</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-dark rounded-pill">@Model.ItemCount</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Active Status</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.IsActive)
+                            {
+                                <span class="active-status-yes"><i class="bi bi-check-circle-fill me-1"></i> Yes</span>
+                            }
+                            else
+                            {
+                                <span class="active-status-no"><i class="bi bi-x-circle-fill me-1"></i> No</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Created Date</dt>
+                        <dd class="col-sm-8">@Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</dd>
+
+                        <dt class="col-sm-4">Updated Date</dt>
+                        <dd class="col-sm-8">@(Model.UpdatedDate?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")</dd>
+                    </dl>
+                </div>
+
+                <div class="row pt-4">
+                    <div class="col-6 col-md-5">
+                        <a asp-action="Edit" asp-route-slug="@Model.Slug" class="btn btn-primary form-control shadow-sm fw-bold">
+                            <i class="bi bi-pencil-square me-1"></i> Edit
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-5">
+                        <a asp-action="Index" class="btn btn-outline-secondary border form-control shadow-sm fw-bold">
+                            <i class="bi bi-arrow-left-circle-fill me-1"></i> Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="section-box h-100 text-center">
+                    <h5 class="text-secondary mb-4 pb-2 border-bottom border-secondary-subtle">
+                        <i class="bi bi-image-fill me-1"></i> Category Image
+                    </h5>
+
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" alt="@Model.Name"
+                             class="img-fluid rounded shadow-lg border border-3 border-light"
+                             style="max-height: 300px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="p-5 text-muted fst-italic border rounded bg-white">No image uploaded.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

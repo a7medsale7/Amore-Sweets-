@@ -1,0 +1,237 @@
+﻿@model Sweets.Models.Category
+@using Sweets.Models.Models
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<style>
+    /* تعريف الألوان (للتناسق في التطبيق) */
+    :root {
+        --color-primary: #6B4226; /* Rich Brown (اللون الأساسي) */
+        --color-accent: #F8BBD0; /* Dusty Rose (لون التمييز الفاتح) */
+        --color-accent-dark: #C79E89; /* Soft Tan (لون تمييز متوسط) */
+        --color-text-dark: #3D2619; /* Darkest Brown (لنصوص العناوين والأسعار) */
+        --color-background-card: #FFFBF7; /* خلفية البطاقة (نظيفة ولامعة) */
+    }
+
+    /* ------------------------ Global & Header ------------------------ */
+
+    .category-header {
+        font-family: 'Playfair Display', serif; /* خط أنيق للعناوين */
+        font-size: 2.5rem;
+        color: var(--color-primary);
+        font-weight: 800;
+    }
+
+    /* ------------------------ Product Card ------------------------ */
+
+    .product-card {
+        background-color: var(--color-background-card);
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+
+    /* ------------------------ Image & Slider (التعديلات هنا) ------------------------ */
+
+    .card-img-wrapper {
+        position: relative;
+        width: 100%;
+        /* زيادة الارتفاع قليلاً والمحافظة عليه كثابت */
+        height: 280px;
+        overflow: hidden;
+        border-bottom: 2px solid var(--color-accent-dark);
+        background-color: #f0f0f0; /* إضافة خلفية فاتحة تظهر مع contain */
+        display: flex;
+        align-items: center; /* لتوسيط الصورة عمودياً */
+        justify-content: center; /* لتوسيط الصورة أفقياً */
+    }
+
+        .card-img-wrapper img {
+            /* التغيير الرئيسي: عرض الصورة كاملة دون قص */
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s ease;
+        }
+
+    .product-card:hover img {
+        /* تأثير التكبير الآن سيتم على الصورة الكاملة */
+        transform: scale(1.03);
+    }
+
+    /* أزرار السلايدر */
+    .carousel-control-prev, .carousel-control-next {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .product-card:hover .carousel-control-prev,
+    .product-card:hover .carousel-control-next {
+        opacity: 1;
+    }
+
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        background-color: rgba(107, 66, 38, 0.7);
+        border-radius: 50%;
+        padding: 15px;
+        width: 30px;
+        height: 30px;
+    }
+
+    /* ------------------------ Body & Actions ------------------------ */
+
+    .card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--color-text-dark);
+        margin-bottom: 5px;
+        padding-top: 5px;
+    }
+
+    .card-price {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--color-primary);
+        margin-bottom: 15px;
+    }
+
+    /* تنسيق الأزرار */
+    .btn-action {
+        border-radius: 8px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn-view {
+        background-color: var(--color-accent-dark);
+        color: #FFF;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+        .btn-view:hover {
+            background-color: #A07F6A;
+            color: #FFF;
+            transform: scale(1.02);
+        }
+
+    .btn-cart {
+        background-color: var(--color-primary);
+        color: #FFF;
+        width: calc(100% - 45px);
+        margin-right: 5px;
+    }
+
+        .btn-cart:hover {
+            background-color: var(--color-text-dark);
+            transform: scale(1.02);
+        }
+
+    .btn-wishlist {
+        background-color: var(--color-accent);
+        color: var(--color-primary);
+        width: 40px;
+        padding: 0;
+    }
+
+        .btn-wishlist:hover {
+            background-color: var(--color-primary);
+            color: #FFF;
+            transform: scale(1.02);
+        }
+</style>
+
+<div class="container my-5">
+
+    <h2 class="mb-5 text-center category-header"><i class="bi bi-shop me-2"></i> @Model.Name Collection</h2>
+
+    <div class="row g-4">
+        @if (Model.Products != null && Model.Products.Any())
+        {
+            @foreach (var p in Model.Products)
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card product-card border-0">
+
+                        <div id="carousel-@p.Id" class="carousel slide card-img-wrapper" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                @if (p.ProductImages != null && p.ProductImages.Any())
+                                {
+                                    @for (int i = 0; i < p.ProductImages.Count; i++)
+                                    {
+                                        var img = p.ProductImages.ElementAt(i);
+                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                                            <img src="@img.ImageUrl" class="d-block w-100" alt="@p.Name" />
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="carousel-item active d-flex justify-content-center align-items-center" style="height: 100%;">
+                                        <i class="bi bi-image-fill fs-1 text-muted"></i>
+                                    </div>
+                                }
+                            </div>
+
+                            @if (p.ProductImages != null && p.ProductImages.Count > 1)
+                            {
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@p.Id" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel-@p.Id" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            }
+                        </div>
+
+                        <div class="card-body text-center pt-3 pb-3">
+                            <h5 class="card-title text-truncate" title="@p.Name">@p.Name</h5>
+                            <p class="card-price">@p.Price.ToString("C")</p>
+
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-slug="@p.Slug"
+                               class="btn btn-action btn-view w-100 mb-2">View Details</a>
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <form asp-area="Customer" asp-controller="Home" asp-action="Details" method="post" class="d-flex flex-grow-1 me-1">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="ProductId" value="@p.Id" />
+                                    <input type="hidden" name="Count" value="1" />
+                                    <input type="hidden" name="categorySlug" value="@Model.Slug" />
+                                    <button type="submit" class="btn btn-action btn-cart flex-grow-1" title="Add to Cart">
+                                        <i class="bi bi-cart-plus me-1"></i> Add
+                                    </button>
+                                </form>
+
+                                <form asp-area="Customer" asp-controller="Home" asp-action="AddToWishList" method="post" class="d-inline-block">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="productId" value="@p.Id" />
+                                    <input type="hidden" name="categorySlug" value="@Model.Slug" />
+                                    <button type="submit" class="btn btn-action btn-wishlist" title="Add to Wishlist">
+                                        <i class="bi bi-heart-fill"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center text-muted w-100 mt-4">No products available in this category.</p>
+        }
+    </div>
+</div>

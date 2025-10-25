@@ -1,0 +1,611 @@
+﻿@model IEnumerable<Sweets.Models.Category>
+
+@{
+    ViewData["Title"] = "Home - Amoré Sweet Boutique";
+}
+
+<style>
+    /* New Global Color Variables for easy theme adjustments */
+    :root {
+        --color-primary: #8C4B3D; /* Deep Rose/Brown for emphasis */
+        --color-secondary: #E3B5A7; /* Soft Rose for accents */
+        --color-tertiary: #5C4033; /* Rich Brown for text/buttons */
+        --color-background-light: #F8F4F2; /* Creamy light background */
+        --color-text-dark: #333;
+        --color-star: #FFC300;
+    }
+
+    /* 🌸 SECTION DIVIDERS (More complex, softer waves) */
+    .section-divider-wave-top {
+        background-color: var(--color-background-light);
+        height: 100px; /* Taller divider */
+        clip-path: polygon(0 0, 100% 70%, 100% 100%, 0 100%); /* New Wave-like Clip Path (Trapezoid with slant) */
+        margin-top: -1px;
+    }
+
+    .section-divider-wave-bottom {
+        background-color: var(--color-background-light);
+        height: 100px;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 30%); /* Inverted Wave-like Clip Path */
+        margin-bottom: -1px;
+    }
+
+    /* 🌸 HERO SECTION - Overhauled */
+    .hero-section {
+        background: linear-gradient(135deg, #FFD6A5, #F7B7A3); /* Soft, inviting gradient */
+        min-height: 90vh;
+        border-radius: 0 0 100px 100px; /* Very large bottom radius */
+        background-image: url('/images/hero-bg-pattern-subtle.png');
+        background-size: cover;
+        background-position: center bottom; /* Better positioning */
+        background-blend-mode: soft-light;
+        animation: hero-fade-in 1.8s ease-out; /* Slower, elegant animation */
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        padding-top: 50px; /* Space from top */
+    }
+
+    .hero-content {
+        max-width: 900px;
+        padding: 50px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 30px;
+        backdrop-filter: blur(3px); /* Subtle blur effect */
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .display-3 {
+        font-size: 4rem;
+        color: var(--color-tertiary);
+        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .brand-emphasis {
+        color: var(--color-primary);
+        font-style: italic;
+    }
+
+    .hero-lead {
+        font-weight: 300;
+        font-size: 1.4rem;
+        color: var(--color-tertiary);
+    }
+
+    .btn-hero {
+        background-color: var(--color-tertiary);
+        color: #fff;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        border: 2px solid #fff; /* White border for pop */
+        box-shadow: 0 10px 20px rgba(92, 64, 51, 0.5);
+        padding: 15px 35px; /* Bigger button */
+        transition: all 0.3s ease;
+    }
+
+        .btn-hero:hover {
+            background-color: var(--color-primary);
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(92, 64, 51, 0.6);
+        }
+
+    /* 🍬 CATEGORY SECTION - NEW CIRCULAR DESIGN */
+    .section-title {
+        color: var(--color-tertiary);
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        margin-bottom: 20px !important;
+    }
+
+        .section-title::after {
+            content: "— Sweet Delights —"; /* Descriptive separator */
+            color: var(--color-secondary);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin: 10px auto 0;
+            display: block;
+            font-family: sans-serif;
+            font-weight: 400;
+        }
+
+    .category-circle-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .category-circle {
+        width: 180px; /* Base size */
+        height: 180px; /* Base size */
+        border-radius: 50%;
+        overflow: hidden;
+        border: 8px solid var(--color-secondary); /* Elegant accent border */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        margin-bottom: 15px;
+        transition: all 0.4s ease;
+        position: relative;
+    }
+
+        .category-circle:hover {
+            transform: scale(1.1);
+            border-color: var(--color-primary); /* Primary color on hover */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the whole image is seen within the circle */
+            transition: transform 0.4s ease;
+        }
+
+        .category-circle:hover img {
+            transform: scale(1.05); /* Subtle zoom on hover */
+        }
+
+    .card-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--color-primary);
+        text-transform: capitalize;
+        letter-spacing: 0;
+        margin-bottom: 10px;
+    }
+
+    .btn-view {
+        background-color: var(--color-primary);
+        color: #ffffff;
+        font-weight: 500;
+        border-radius: 20px;
+        padding: 8px 25px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+    }
+
+        .btn-view:hover {
+            background-color: var(--color-tertiary);
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+    /* 💬 FEEDBACK SECTION - Refined */
+    .feedback-section {
+        background: #FFF5EC;
+    }
+
+    .feedback-card {
+        background-color: #ffffff;
+        border-radius: 25px;
+        padding: 40px;
+        max-width: 650px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid var(--color-secondary);
+        min-height: 320px;
+        transition: all 0.3s ease;
+    }
+
+        .feedback-card:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+    .feedback-icon i {
+        font-size: 2.5rem !important;
+        color: var(--color-secondary) !important;
+    }
+
+    .text-brown {
+        color: var(--color-tertiary);
+        font-size: 1.2rem;
+    }
+
+    .stars i {
+        color: var(--color-star) !important; /* Gold stars */
+    }
+
+    .carousel-indicators button {
+        background-color: var(--color-secondary) !important;
+    }
+
+    .carousel-indicators .active {
+        background-color: var(--color-primary) !important;
+    }
+
+    /* 💎 NEW SECTION STYLES */
+    .feature-icon {
+        color: var(--color-primary);
+        font-size: 3rem;
+        margin-bottom: 15px;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-box:hover .feature-icon {
+        transform: rotateY(180deg);
+    }
+
+    .story-content {
+        background-color: #fcfcfc;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .promo-card {
+        background: linear-gradient(45deg, var(--color-primary), #E3B5A7);
+        color: white;
+        padding: 40px;
+        border-radius: 20px;
+        transition: transform 0.4s ease;
+    }
+
+        .promo-card:hover {
+            transform: scale(1.03);
+        }
+
+    .new-release-img {
+        border-radius: 15px;
+        object-fit: cover;
+        height: 300px;
+        width: 100%;
+        transition: all 0.5s ease;
+    }
+
+    .new-release-card:hover .new-release-img {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .hover-grow {
+        transition: transform 0.3s ease;
+    }
+
+        .hover-grow:hover {
+            transform: scale(1.05);
+        }
+
+    @@keyframes hero-fade-in {
+        0% {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    /* Media queries remain functional */
+    @@media (max-width: 768px) {
+        .display-3 {
+            font-size: 3rem;
+        }
+
+        .hero-lead {
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .section-divider-wave-top, .section-divider-wave-bottom {
+            height: 60px;
+        }
+
+        .feedback-card {
+            min-height: 250px;
+        }
+
+        .category-circle {
+            width: 150px; /* Smaller circle on mobile */
+            height: 150px;
+            border-width: 5px;
+        }
+    }
+</style>
+
+<section class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+    <div class="hero-content" data-aos="fade-up" data-aos-duration="1500">
+        <h1 class="display-3 fw-bold mb-4" style="font-family: 'Playfair Display', serif;">
+            Welcome to <span class="brand-emphasis">Amoré Sweet Boutique</span> <i class="bi bi-cupcake"></i>
+        </h1>
+        <p class="lead mb-5 hero-lead bg-transparent">
+            Indulge in the finest handmade sweets, where passion and delicate flavors meet.
+        </p>
+        <a href="#categories" class="btn btn-hero btn-lg shadow-lg">
+            <i class="bi bi-search me-2"></i> Explore Our Delights
+        </a>
+    </div>
+</section>
+
+<div class="section-divider-wave-bottom" style="background-color: #ffffff;"></div>
+
+<section id="our-story" class="container my-5 py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+            <h2 class="section-title text-start mb-4">Our Sweet Story 📜</h2>
+            <div class="story-content">
+                <p class="lead" style="color: var(--color-text-dark);">
+                    **Amoré Sweet Boutique** began with a secret family recipe and a dream to share the purest joy of baking. Every treat is crafted with locally-sourced ingredients, a dash of love, and a commitment to timeless quality. From our kitchen to your table, we promise an unforgettable, melt-in-your-mouth experience.
+                </p>
+                <a asp-controller="About" asp-action="Index" class="btn btn-outline-info rounded-pill mt-3" style="color: var(--color-primary); border-color: var(--color-primary);">Read More <i class="bi bi-book"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-6 text-center" data-aos="fade-left">
+            <img src="/images/istockphoto-921788748-2048x2048.jpg" alt="A baker at work" class="img-fluid rounded-3 shadow-lg" style="max-height: 400px; object-fit: cover;">
+        </div>
+    </div>
+</section>
+
+<div class="section-divider-wave-top" style="background-color: var(--color-background-light);"></div>
+
+<div id="categories" class="container-fluid my-0 py-5" style="background-color: var(--color-background-light);">
+    <h2 class="mb-5 text-center fw-bold section-title" data-aos="fade-down">
+        Our Artisan Categories ✨
+    </h2>
+
+    <div class="row g-4 justify-content-center px-4">
+        @foreach (var cat in Model)
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2" data-aos="zoom-in" data-aos-delay="@(cat.Id * 100)">
+                <div class="category-circle-wrapper">
+                    <div class="category-circle mx-auto">
+                        <img src="@cat.ImageUrl" alt="Category: @cat.Name">
+                    </div>
+                    <h5 class="card-title text-truncate" title="@cat.Name">@cat.Name</h5>
+                    <a asp-controller="Home" asp-action="Category" asp-route-slug="@cat.Slug"
+                       class="btn btn-view btn-sm">
+                        View Menu <i class="bi bi-arrow-right-short"></i>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="section-divider-wave-bottom" style="background-color: var(--color-background-light);"></div>
+
+<section id="features" class="container my-5 py-5">
+    <h2 class="text-center fw-bold section-title mb-5" data-aos="fade-down">Why Choose Amoré? 🌟</h2>
+    <div class="row text-center">
+        <div class="col-md-4 mb-4 feature-box" data-aos="zoom-in" data-aos-delay="100">
+            <i class="bi bi-hand-thumbs-up feature-icon"></i>
+            <h5 class="fw-bold" style="color: var(--color-tertiary);">Handcrafted Quality</h5>
+            <p class="text-muted">Made fresh daily using traditional methods for authentic flavor.</p>
+        </div>
+        <div class="col-md-4 mb-4 feature-box" data-aos="zoom-in" data-aos-delay="200">
+            <i class="bi bi-tree feature-icon"></i>
+            <h5 class="fw-bold" style="color: var(--color-tertiary);">Sustainable Sourcing</h5>
+            <p class="text-muted">We prioritize local, ethical, and eco-friendly ingredients.</p>
+        </div>
+        <div class="col-md-4 mb-4 feature-box" data-aos="zoom-in" data-aos-delay="300">
+            <i class="bi bi-truck feature-icon"></i>
+            <h5 class="fw-bold" style="color: var(--color-tertiary);">Nationwide Delivery</h5>
+            <p class="text-muted">Freshness guaranteed, delivered right to your doorstep.</p>
+        </div>
+    </div>
+</section>
+
+<section id="promo" class="container my-5 py-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="promo-card text-center shadow-lg" data-aos="flip-up">
+                <h3 class="display-6 fw-bold mb-3">Seasonal Special: 15% OFF!</h3>
+                <p class="lead mb-4">
+                    Get a 15% discount on all our new Autumn Pumpkin Spice collection. Limited time only!
+                </p>
+                <a asp-controller="Home" asp-action="Special" class="btn btn-lg" style="background-color: #fff; color: var(--color-tertiary); font-weight: bold;">
+                    Shop Now <i class="bi bi-arrow-right-circle"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="new-releases" class="container my-5 py-5">
+    <h2 class="text-center fw-bold section-title mb-5" data-aos="fade-down">Freshly Baked: New Arrivals 🆕</h2>
+    <div class="row g-4 new-release-card">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <img src="/images/istockphoto-537172279-612x612.jpg" alt="Rosewater Macarons" class="new-release-img shadow-sm">
+            <h4 class="mt-3 text-center fw-bold" style="color: var(--color-primary);">Rosewater Macarons</h4>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <img src="/images/Pistachio Croissant.jpg" alt="Pistachio Croissant" class="new-release-img shadow-sm">
+            <h4 class="mt-3 text-center fw-bold" style="color: var(--color-primary);">Pistachio Croissant</h4>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <img src="/images/Dark Chocolate Truffles.jpg" alt="Dark Chocolate Truffles" class="new-release-img shadow-sm">
+            <h4 class="mt-3 text-center fw-bold" style="color: var(--color-primary);">Dark Chocolate Truffles</h4>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider-wave-top" style="background-color: #FFF5EC;"></div>
+
+@if (ViewBag.Feedbacks != null && ViewBag.Feedbacks.Count > 0)
+{
+    <section class="feedback-section py-5 my-0" style="background-color: #FFF5EC;">
+        <div class="container text-center py-4">
+            <h2 class="fw-bold mb-5 section-title" data-aos="fade-down" style="color: var(--color-tertiary);">
+                What Our Customers Say <i class="bi bi-chat-dots-fill"></i>
+            </h2>
+
+            <div id="feedbackCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+                <div class="carousel-inner">
+                    @for (int i = 0; i < ViewBag.Feedbacks.Count; i++)
+                    {
+                        var fb = ViewBag.Feedbacks[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <div class="feedback-card mx-auto" data-aos="zoom-in" data-aos-delay="200">
+                                <div class="feedback-icon mb-4">
+                                    <i class="bi bi-quote"></i>
+                                </div>
+
+                                <p class="fs-4 fst-italic text-dark mb-4 px-lg-5">“@fb.Comment”</p>
+                                <div class="stars mb-3">
+                                    @for (int r = 0; r < 5; r++)
+                                    {
+                                        if (r < fb.Rating)
+                                        {
+                                            <i class="bi bi-star-fill" style="font-size:1.4rem;"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-star text-muted" style="font-size:1.4rem;"></i>
+                                        }
+                                    }
+                                </div>
+                                <p class="fw-bold text-brown mb-1 mt-3">@fb.Name</p>
+                                <small class="text-muted fst-normal">@fb.CreatedAt.ToString("MMM dd, yyyy")</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="carousel-indicators position-relative mt-5">
+                    @for (int i = 0; i < ViewBag.Feedbacks.Count; i++)
+                    {
+                        <button type="button" data-bs-target="#feedbackCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+                    }
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#feedbackCarousel" data-bs-slide="prev">
+                    <span class="bi bi-chevron-left" aria-hidden="true" style="color: var(--color-tertiary); font-size: 3rem;"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#feedbackCarousel" data-bs-slide="next">
+                    <span class="bi bi-chevron-right" aria-hidden="true" style="color: var(--color-tertiary); font-size: 3rem;"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+}
+
+<div class="section-divider-wave-bottom" style="background-color: #FFF5EC;"></div>
+
+<section id="newsletter" class="container my-5 py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="fw-bold section-title mb-3" data-aos="fade-down">Join Our Sweet Circle 💌</h2>
+            <p class="lead mb-4 text-muted">Subscribe to our newsletter for exclusive recipes, offers, and first-look at new collections!</p>
+            <form data-aos="zoom-in" data-aos-delay="300">
+                <div class="input-group mb-3 shadow-sm rounded-pill p-1 border" style="max-width: 500px; margin: 0 auto;">
+                    <input type="email" class="form-control border-0 bg-transparent" placeholder="Enter your email" aria-label="Email for Newsletter">
+                    <button class="btn btn-view rounded-pill" type="button" style="background-color: var(--color-primary);">Subscribe</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section id="faq-preview" class="container my-5 py-5 bg-light rounded-4 shadow-sm">
+    <h2 class="text-center fw-bold section-title mb-5" data-aos="fade-down">Quick Answers ❓</h2>
+    <div class="accordion accordion-flush" id="faqAccordion">
+        <div class="accordion-item" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" style="color: var(--color-tertiary);">
+                    How long will my order take to ship?
+                </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    We process orders within 1-2 business days. Shipping then takes 2-5 business days depending on your location.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item" data-aos="fade-up" data-aos-delay="200">
+            <h2 class="accordion-header" id="flush-headingTwo">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo" style="color: var(--color-tertiary);">
+                    Do you offer gluten-free options?
+                </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Yes! We have a dedicated 'Allergens & Dietary' category with many delicious gluten-free and vegan choices.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="iconic-products" class="container-fluid my-5 py-5 text-center" style="background-color: var(--color-background-light);">
+    <h2 class="fw-bold section-title mb-5" data-aos="fade-down">Amoré Hall of Fame 🏆</h2>
+    <div class="row justify-content-center g-4">
+
+        <div class="col-md-4 col-lg-3" data-aos="flip-right" data-aos-delay="100">
+            <img src="/images/Classic Eclair.jpg" alt="Classic Eclair"
+                 class="img-fluid rounded-circle border border-5 border-white shadow-lg"
+                 style="width: 200px; height: 200px; object-fit: cover;"> 
+            <p class="mt-3 fw-bold text-brown fs-5">Classic Eclair</p> 
+        </div>
+
+        <div class="col-md-4 col-lg-3" data-aos="flip-right" data-aos-delay="200">
+            <img src="/images/Red Velvet Cake.jpg" alt="Red Velvet Cake"
+                 class="img-fluid rounded-circle border border-5 border-white shadow-lg"
+                 style="width: 200px; height: 200px; object-fit: cover;">
+            <p class="mt-3 fw-bold text-brown fs-5">Red Velvet Cake</p>
+        </div>
+
+        <div class="col-md-4 col-lg-3" data-aos="flip-right" data-aos-delay="300">
+            <img src="/images/Salted Caramel Tart.jpg" alt="Salted Caramel Tart"
+                 class="img-fluid rounded-circle border border-5 border-white shadow-lg"
+                 style="width: 200px; height: 200px; object-fit: cover;">
+            <p class="mt-3 fw-bold text-brown fs-5">Salted Caramel Tart</p>
+        </div>
+
+    </div>
+</section>
+
+<section id="visit-us" class="container my-5 py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7" data-aos="fade-right">
+            <h2 class="text-start fw-bold section-title mb-4">Visit Our Boutique 📍</h2>
+            <p class="lead">Experience the aroma and ambiance in person. Our flagship store is open!</p>
+            <address>
+                <i class="bi bi-geo-alt-fill me-2" style="color: var(--color-primary);"></i> **123 Amoré Lane, Sweet City, SC 90210** <br>
+                <i class="bi bi-clock-fill me-2" style="color: var(--color-primary);"></i> Mon - Fri: 9:00 AM - 6:00 PM | Sat: 10:00 AM - 4:00 PM
+            </address>
+        </div>
+        <div class="col-lg-5" data-aos="zoom-in" data-aos-delay="300">
+            <div class="embed-responsive embed-responsive-4by3 rounded-3 shadow-lg">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1000!2d-0.127758!3d51.507351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDE5JzI3LjMiTiAwMMKwMAd4NSYuMSJF!5e0!3m2!1sen!2sus!4v1625440000000" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="partners" class="container-fluid my-5 py-4 text-center border-top border-bottom">
+    <h4 class="text-muted mb-4 fw-light" data-aos="fade-up">As Featured In:</h4>
+    <div class="row align-items-center justify-content-center">
+        <div class="col-3 col-md-2" data-aos="zoom-in" data-aos-delay="100">
+            <img src="/images/logo-gourmet.jpg" alt="Gourmet Magazine" class="img-fluid" style="filter: grayscale(100%); opacity: 0.6; max-height: 40px;">
+        </div>
+        <div class="col-3 col-md-2" data-aos="zoom-in" data-aos-delay="200">
+            <img src="/images/logo-sweetlife.jpg" alt="Sweet Life Blog" class="img-fluid" style="filter: grayscale(100%); opacity: 0.6; max-height: 40px;">
+        </div>
+        <div class="col-3 col-md-2" data-aos="zoom-in" data-aos-delay="300">
+            <img src="/images/logo-baker.jpg" alt="The Baker's Journal" class="img-fluid" style="filter: grayscale(100%); opacity: 0.6; max-height: 40px;">
+        </div>
+    </div>
+</section>
+
+<section id="gallery" class="container-fluid my-5 py-5">
+    <h2 class="text-center fw-bold section-title mb-5" data-aos="fade-down">A Taste of Amoré 📸</h2>
+    <div class="row g-2">
+        <div class="col-4" data-aos="fade-up">
+            <img src="/images/Pastry display.jpg" class="img-fluid w-100 rounded-3 shadow-sm hover-grow" alt="Pastry display" style="object-fit: cover; height: 250px;">
+        </div>
+        <div class="col-4" data-aos="fade-up" data-aos-delay="100">
+            <img src="/images/Cupcakes close-up.jpg" class="img-fluid w-100 rounded-3 shadow-sm hover-grow" alt="Cupcakes close-up" style="object-fit: cover; height: 250px;">
+        </div>
+        <div class="col-4" data-aos="fade-up" data-aos-delay="200">
+            <img src="/images/Coffee and sweets.jpg" class="img-fluid w-100 rounded-3 shadow-sm hover-grow" alt="Coffee and sweets" style="object-fit: cover; height: 250px;">
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        if (typeof AOS !== 'undefined') {
+            AOS.refresh();
+        }
+    </script>
+}

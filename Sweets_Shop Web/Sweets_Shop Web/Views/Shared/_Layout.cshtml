@@ -1,0 +1,426 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Amoré Sweet Boutique</title>
+
+    @* ======================================= *@
+    @* == ✅ ADDED: FAVICON (PAGE LOGO) == *@
+    @* ======================================= *@
+    <link rel="icon" type="image/x-icon" href="~/images/logo-test.ico" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css" />
+
+    <style>
+        /* ================================== */
+        /* == THEME VARIABLES (CSS) == */
+        /* ================================== */
+        :root {
+            /* Base Colors (Shared) */
+            --color-primary: #8C4B3D; /* Rich Brown */
+            --color-secondary: #E3B5A7; /* Dusty Rose / Accent */
+            --color-tertiary: #5C4033; /* Dark Chocolate Brown */
+            --color-light-cream: #FFEDD8; /* Creamy White */
+            --color-accent: var(--color-secondary);
+            /* LIGHT MODE COLORS (Hardcoded for simplicity) */
+            --bs-body-color: var(--color-tertiary); /* Dark text on light background */
+            --bs-body-bg: #ffffff;
+            --color-navbar-bg: var(--color-tertiary);
+            --color-navbar-text: var(--color-light-cream);
+            --color-footer-bg: var(--color-tertiary);
+            --color-footer-text: var(--color-light-cream);
+            /* General Content Colors */
+            --color-content-text: var(--color-tertiary);
+            --color-link: var(--color-primary);
+            --color-link-hover: var(--color-tertiary);
+            --color-border: rgba(0, 0, 0, 0.1);
+            --color-card-bg: #fff;
+        }
+
+        /* Global Body & Layout */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--bs-body-color);
+            background-color: var(--bs-body-bg);
+            transition: background-color 0.5s, color 0.5s;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-wrapper {
+            flex-grow: 1;
+        }
+
+        /* 💻 HEADER (NAVBAR) */
+        .navbar {
+            background-color: var(--color-navbar-bg) !important;
+            border-bottom: 5px solid var(--color-accent);
+            transition: all 0.5s ease;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-navbar-text) !important;
+            font-size: 2rem !important;
+            font-weight: 700;
+            padding-right: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.3);
+            transition: color 0.5s;
+        }
+
+            .navbar-brand .sweet-text {
+                font-weight: 300;
+                color: var(--color-accent);
+            }
+
+        .navbar-nav .nav-link {
+            color: var(--color-navbar-text) !important;
+            font-weight: 600;
+            margin: 0 8px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s;
+        }
+
+            .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+                background-color: var(--color-primary);
+                color: white !important;
+                transform: translateY(-2px);
+            }
+
+        .dropdown-menu-dark {
+            /* Ensures dropdown menus stick to the dark theme for contrast on light body */
+            background-color: var(--color-tertiary) !important;
+            border: 1px solid var(--color-primary);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 10px 0;
+        }
+
+            .dropdown-menu-dark .dropdown-item {
+                color: var(--color-light-cream) !important;
+            }
+
+                .dropdown-menu-dark .dropdown-item:hover {
+                    background-color: var(--color-primary);
+                    color: white !important;
+                }
+
+        .badge.bg-danger {
+            background-color: #E63946 !important;
+            font-size: 0.8rem;
+            padding: 5px 9px;
+            border-radius: 50px;
+            font-weight: 700;
+            vertical-align: super;
+        }
+
+        /* 🦶 FOOTER */
+        .footer {
+            background-color: var(--color-footer-bg);
+            color: var(--color-footer-text) !important;
+            font-size: 0.95rem;
+            padding: 40px 0 20px 0;
+            border-top: 5px solid var(--color-primary);
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: auto;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+            .footer h5 {
+                font-family: 'Playfair Display', serif;
+                font-weight: 700;
+                color: var(--color-accent);
+                margin-bottom: 15px;
+                border-bottom: 2px solid var(--color-primary);
+                padding-bottom: 5px;
+            }
+
+            .footer p, .footer small, .footer a {
+                color: rgba(255, 255, 255, 0.85);
+            }
+
+            .footer a {
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+                .footer a:hover {
+                    color: var(--color-accent);
+                }
+
+            .footer .social-icons a {
+                font-size: 1.8rem;
+                margin: 0 10px;
+            }
+
+        .bi-balloon-heart-fill {
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Scroll-to-top button */
+        #scrollToTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 100;
+            border: none;
+            background-color: var(--color-primary);
+            color: white;
+            cursor: pointer;
+            padding: 12px 16px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+            #scrollToTopBtn:hover {
+                background-color: var(--color-tertiary);
+                transform: translateY(-3px);
+            }
+
+        .text-accent {
+            color: var(--color-accent) !important;
+        }
+
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-lg fixed-top">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    @* ======================================= *@
+                    @* == ✅ ADDED: Cart Icon to Navbar Brand == *@
+                    @* ======================================= *@
+                    <i class="bi bi-cart-fill me-2 text-accent"></i>
+                    Amoré <span class="sweet-text">Sweet Boutique</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Product" asp-action="Index">
+                                <i class="bi bi-shop"></i> Shop Products
+                            </a>
+                        </li>
+
+                        @if (User.IsInRole(Sweets.Utility.SD.Role_Customer))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Feedback" asp-action="Create">
+                                    <i class="bi bi-chat-left-dots"></i> Leave Feedback
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(Sweets.Utility.SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-gear-wide-connected"></i> Admin Panel
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="bi bi-tags"></i> Manage Categories</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="bi bi-bag-heart"></i> Manage Products</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index"><i class="bi bi-people"></i> Manage Users</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Feedback" asp-action="Index"><i class="bi bi-chat-heart"></i> View Feedback</a></li>
+                                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-person-plus"></i> Create User</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">
+                                <i class="bi bi-receipt-cutoff"></i> Orders
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                        @* Removed: Theme Toggle Button *@
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="shopDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-basket"></i> Shop Tools
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="shopDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                        <i class="bi bi-cart-fill"></i> Shopping Cart
+                                        <span class="badge bg-danger ms-2">
+                                            @(HttpContextAccessor.HttpContext.Session.GetInt32(Sweets.Utility.SD.SessionCart) ?? 0)
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="Customer" asp-controller="WishList" asp-action="Index">
+                                        <i class="bi bi-heart-fill"></i> Wishlist
+                                        <span class="badge bg-danger ms-2">
+                                            @(HttpContextAccessor.HttpContext.Session.GetInt32(Sweets.Utility.SD.WishlistCount) ?? 0)
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div style="height: 80px;"></div>
+    </header>
+
+    <div class="container-fluid p-0">
+        <main role="main" class="pb-3 page-wrapper">
+            <partial name="_Notification" />
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row pt-3 pb-3">
+
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>About Amoré</h5>
+                    <p>
+                        Amoré Sweet Boutique is your destination for handcrafted sweets and pastries made with a touch of passion and love. We use the finest natural ingredients to deliver an unforgettable taste experience in every bite.
+                    </p>
+                    <small class="d-block mt-3">Handcrafted with love by <span class="text-accent">Amoré</span> since 2020.</small>
+                </div>
+
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                                                   
+                        <li><a asp-area="Customer" asp-controller="Product" asp-action="Index"><i class="bi bi-chevron-right me-2"></i> Shop All Products</a></li>
+                        <li><a asp-area="Admin" asp-controller="Order" asp-action="Index"><i class="bi bi-chevron-right me-2"></i> Track Your Order</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy"><i class="bi bi-chevron-right me-2"></i> Privacy Policy</a></li>
+                        <li><a asp-area="" asp-controller="Feedback" asp-action="Create"><i class="bi bi-chevron-right me-2"></i> Send Feedback</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-geo-alt-fill me-2 text-accent"></i> 123 Sweet Street, Love City, Zip 1000</li>
+                        <li><i class="bi bi-envelope-fill me-2 text-accent"></i> info@amoresweets.com</li>
+                        <li><i class="bi bi-telephone-fill me-2 text-accent"></i> +00 123 456 7890</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-2">
+                    <h5>Follow Us</h5>
+                    <div class="social-icons">
+                        <a href="#" class="text-white-50 mx-1"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white-50 mx-1"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white-50 mx-1"><i class="bi bi-twitter"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr style="border-color: rgba(255, 255, 255, 0.2);" />
+
+            <div class="row">
+                <div class="col-12 text-center pt-2">
+                    &copy; @DateTime.Now.Year - Amoré <i class="bi bi-balloon-heart-fill text-danger"></i> Sweet Boutique. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            mirror: false
+        });
+    </script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="//cdn.datatables.net/2.3.4/js/dataTables.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+        // ==================================
+        // == SCROLL TO TOP FUNCTIONALITY ==
+        // ==================================
+        let mybutton = document.getElementById("scrollToTopBtn");
+
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

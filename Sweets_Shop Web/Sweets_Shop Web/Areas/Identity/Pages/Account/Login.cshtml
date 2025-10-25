@@ -1,0 +1,215 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<style>
+    :root {
+        --color-primary-dark: #6B4226;
+        --color-secondary-light: #F8BBD0;
+        --color-accent-dark: #C79E89; /* Soft Tan */
+        --color-bg-light: #FFF8F0;
+        --color-accent-text: #E57373;
+    }
+
+    body {
+        background-color: var(--color-bg-light);
+        /* الحل الرئيسي لإزالة شريط التمرير الأفقي */
+        overflow-x: hidden;
+    }
+
+    .auth-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        border: none;
+        overflow: hidden;
+    }
+
+    .auth-card-header {
+        background-color: var(--color-primary-dark) !important;
+        color: white;
+        padding: 25px 0;
+        border-bottom: 7px solid var(--color-secondary-light);
+    }
+
+    .auth-card-body {
+        /* تقليل الحشو قليلاً ليناسب الهواتف المحمولة بشكل أفضل */
+        padding: 40px !important;
+    }
+
+    /* ------------------------ الأزرار وتأثيراتها ------------------------ */
+
+    .btn-auth-primary {
+        background-color: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+        color: white;
+        font-weight: 700;
+        border-radius: 10px;
+        padding: 12px 0;
+        font-size: 1.15rem;
+        transition: all 0.3s ease;
+    }
+
+        .btn-auth-primary:hover {
+            background-color: #5A351D;
+            border-color: #5A351D;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+    .auth-links a {
+        color: var(--color-primary-dark);
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+        .auth-links a:hover {
+            color: var(--color-accent-text);
+            text-decoration: underline;
+        }
+
+    .form-control:focus {
+        border-color: var(--color-secondary-light) !important;
+        box-shadow: 0 0 0 0.25rem rgba(248, 187, 208, 0.6) !important;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+    }
+
+    /* تنسيق زر جوجل الجديد */
+    .btn-google {
+        background-color: #fff;
+        border: 2px solid var(--color-accent-dark);
+        color: var(--color-primary-dark);
+        font-weight: 700;
+        border-radius: 10px;
+        padding: 12px 0;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn-google:hover {
+            background-color: #fcfcfc;
+            border-color: var(--color-primary-dark);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+            color : darkslategrey;
+
+        }
+
+        .btn-google img {
+            width: 25px;
+            height: 25px;
+            margin-right: 12px;
+            vertical-align: middle;
+        }
+
+    /* OR line */
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 30px 0;
+    }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .divider:not(:empty)::before {
+            margin-right: .75em;
+        }
+
+        .divider:not(:empty)::after {
+            margin-left: .75em;
+        }
+</style>
+
+
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-7 col-xl-6">
+        <div class="card auth-card">
+            <div class="card-header auth-card-header text-center">
+                <h2 class="py-1 mb-0 display-6 fw-bold">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Welcome Back
+                </h2>
+            </div>
+
+            <div class="card-body auth-card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h4 class="text-secondary text-center mb-5 fw-light">
+                            Log in to your <strong>Sweets</strong> account.
+                        </h4>
+
+                        <form id="account" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-4 text-center" role="alert"></div>
+
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                <label asp-for="Input.Email" class="form-label text-muted">Email Address</label>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-floating mb-4">
+                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                <label asp-for="Input.Password" class="form-label text-muted">Password</label>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" asp-for="Input.RememberMe" id="rememberMeCheck" />
+                                    <label class="form-check-label text-secondary" for="rememberMeCheck">
+                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                    </label>
+                                </div>
+                                <div class="auth-links">
+                                    <a id="forgot-password" asp-page="./ForgotPassword" class="small">Forgot your password?</a>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <button id="login-submit" type="submit" class="w-100 btn btn-auth-primary">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i> LOG IN
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="divider text-muted">OR</div>
+
+                        <form asp-page-handler="ExternalLogin" method="post">
+                            <input type="hidden" name="provider" value="Google" />
+                            <button type="submit" class="w-100 btn btn-google">
+                                <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google logo" />
+                                Sign in with Google
+                            </button>
+                        </form>
+
+                        <div class="auth-links text-center mt-4 pt-3 border-top">
+                            <p class="mb-0">
+                                Don't have an account?
+                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="fw-bold">Register as a new user</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

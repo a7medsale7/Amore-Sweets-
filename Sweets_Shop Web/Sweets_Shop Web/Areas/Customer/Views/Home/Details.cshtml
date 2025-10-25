@@ -1,0 +1,311 @@
+﻿@model ShoppingCart
+@using Sweets.Models.Models
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<style>
+    /* تعريف الألوان (افترض أن المتغيرات غير معرّفة عالميًا) */
+    :root {
+        --color-primary: #6B4226; /* Rich Brown (اللون الأساسي - غامق) */
+        --color-accent: #C79E89; /* Dusty Rose/Soft Tan (لون ثانوي - مميز) */
+        --color-light-cream: #FFF7F2; /* Very Light/Cream (لون الخلفية) */
+        --color-tertiary: #3D2619; /* Darkest Brown (للنصوص الغامقة) */
+    }
+
+    /* 1. Base Styles & Typography */
+    .detail-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); /* ظل أقوى */
+    }
+
+    .card-header-elegant {
+        background-color: var(--color-primary); /* Rich Brown */
+        border-top-left-radius: 15px !important;
+        border-top-right-radius: 15px !important;
+    }
+
+    .product-title {
+        font-family: 'Playfair Display', serif;
+        color: var(--color-tertiary); /* النص الغامق */
+        font-size: 2.5rem;
+        font-weight: 800; /* أكثر وضوحًا */
+        margin-bottom: 0.5rem;
+    }
+
+    /* 2. Image Carousel Enhancements (تحسين السلايدر) */
+    .image-container {
+        border: 4px solid var(--color-light-cream); /* إطار سميك ولون فاتح (Cream) */
+        border-radius: 10px;
+        padding: 0; /* إلغاء البادينج الداخلي للحاوية */
+        background-color: #ffffff;
+        height: 100%;
+        overflow: hidden; /* للحفاظ على حدود الصورة داخل الحاوية */
+    }
+
+    .carousel-item img {
+        border-radius: 8px; /* حواف داخلية ناعمة */
+        max-height: 500px; /* زيادة حجم الصورة قليلاً */
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    /* أزرار التحكم بالسلايدر (أصبحوا أوضح وأكثر جمالًا) */
+    .carousel-control-prev, .carousel-control-next {
+        width: 10%; /* عرض أكبر للتحكم */
+        opacity: 0.8;
+        transition: opacity 0.3s;
+    }
+
+        .carousel-control-prev:hover, .carousel-control-next:hover {
+            opacity: 1;
+        }
+
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        background-color: var(--color-primary); /* لون البني الغامق للأيقونات */
+        padding: 20px;
+        border-radius: 50%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+
+    /* 3. Product Info Styling */
+    .product-details-box {
+        background-color: var(--color-light-cream); /* خلفية فاتحة جدًا لتباين أفضل */
+        border: 1px solid var(--color-accent); /* إطار بلون مميز وناعم */
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+        .product-details-box dt {
+            font-weight: 700;
+            color: var(--color-primary); /* استخدم البني الغني للعناوين */
+            padding-top: 5px;
+        }
+
+        .product-details-box dd {
+            padding-top: 5px;
+            margin-bottom: 5px;
+            color: var(--color-tertiary); /* النص الغامق */
+        }
+
+    .price-display {
+        font-size: 2.5rem; /* أكبر وأكثر وضوحًا */
+        font-weight: 900;
+        color: var(--color-primary); /* استخدم البني الغامق للسعر ليكون بارزًا */
+        font-family: 'Playfair Display', serif;
+        margin-top: 10px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid var(--color-accent);
+        padding-bottom: 10px;
+    }
+
+    /* شارة المخزون */
+    .badge-stock {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 5px 10px;
+    }
+
+    /* 4. Action Buttons and Quantity Control */
+    .btn-cart {
+        background-color: var(--color-primary);
+    }
+
+        .btn-cart:hover {
+            background-color: var(--color-tertiary); /* أغمق عند التمرير */
+        }
+
+    .btn-wishlist {
+        background-color: var(--color-accent); /* Dusty Rose */
+        color: var(--color-primary);
+    }
+
+        .btn-wishlist:hover {
+            background-color: #B58A73; /* أغمق قليلاً من الـ Accent */
+            color: #FFF;
+        }
+
+    .quantity-control {
+        border: 1px solid var(--color-accent);
+    }
+
+        .quantity-control button {
+            background-color: var(--color-light-cream);
+            color: var(--color-primary);
+        }
+
+            .quantity-control button:hover {
+                background-color: var(--color-accent);
+            }
+
+        .quantity-control input {
+            color: var(--color-tertiary); /* لون غامق لعدد الكمية */
+        }
+</style>
+
+<div class="container my-5">
+    <div class="card detail-card border-0">
+        <div class="card-header card-header-elegant py-3 text-center">
+            <h2 class="text-white mb-0"><i class="bi bi-tag me-2"></i> Product Showcase</h2>
+        </div>
+
+        <div class="card-body p-5">
+            <div class="row g-5">
+
+                <div class="col-lg-5">
+                    <div class="image-container shadow-lg">
+                        @if (Model.Product.ProductImages != null && Model.Product.ProductImages.Any())
+                        {
+                            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @for (int i = 0; i < Model.Product.ProductImages.Count; i++)
+                                    {
+                                        var img = Model.Product.ProductImages.ElementAt(i);
+                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                                            @* تم إزالة الـ max-height لضمان أن الـ object-fit: cover يعمل بشكل صحيح داخل الـ 500px @*@
+                                            <img src="@img.ImageUrl" alt="Product Image @i" class="d-block w-100 shadow-sm">
+                                        </div>
+                                    }
+                                </div>
+
+                                @if (Model.Product.ProductImages.Count > 1)
+                                {
+                                    @* تحسين مظهر أزرار التحكم بالسلايدر @*@
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <i class="bi bi-image-fill fs-1 text-muted"></i>
+                                <p class="text-muted mt-3">No images available for this masterpiece.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="product-details-box shadow-sm">
+
+                        <h1 class="product-title">@Model.Product.Name</h1>
+                        <p class="text-muted mb-4 fs-5">Category: **@Model.Product.Category?.Name**</p>
+
+                        @* السعر بارز وواضح @*@
+                        <h3 class="price-display">@Model.Product.Price.ToString("C")</h3>
+
+                        <dl class="row mb-4 border-top pt-3">
+                            <dt class="col-sm-3">Description</dt>
+                            <dd class="col-sm-9 text-dark">@Html.Raw(Model.Product.Description)</dd>
+
+                            <dt class="col-sm-3">SKU / Code</dt>
+                            <dd class="col-sm-9 text-dark">@Model.Product.Slug</dd>
+
+                            <dt class="col-sm-3">Availability</dt>
+                            <dd class="col-sm-9 text-dark">
+                                @if (Model.Product.StockQuantity > 0)
+                                {
+                                    <span class="badge bg-success bg-opacity-75 badge-stock"><i class="bi bi-check-circle-fill"></i> In Stock (@Model.Product.StockQuantity left)</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger bg-opacity-75 badge-stock"><i class="bi bi-x-octagon-fill"></i> Out of Stock</span>
+                                }
+                            </dd>
+                        </dl>
+
+                        <div class="d-flex flex-wrap justify-content-start align-items-center gap-3 pt-4 border-top">
+
+                            <form asp-area="Customer" asp-controller="Home" asp-action="Details" method="post" class="d-flex gap-3 align-items-center">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="ProductId" value="@Model.Product.Id" />
+                                <input type="hidden" name="categorySlug" value="@Model.Product.Category?.Slug" />
+
+                                @* تم تغيير لون Quantity إلى غامق ومتناسق @*@
+                                <label for="productQty" class="fw-bold text-tertiary">Quantity:</label>
+                                <div class="input-group quantity-control shadow-sm">
+                                    <button class="btn" type="button" id="btn-minus">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <input asp-for="Count" type="number" id="productQty" name="Count"
+                                           class="form-control text-center" value="1" min="1" max="@Model.Product.StockQuantity" />
+                                    <button class="btn" type="button" id="btn-plus">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+
+                                <button type="submit" class="btn btn-cart shadow" title="Add to Cart" style="min-width: 180px;">
+                                    <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                                </button>
+                            </form>
+
+                            <form asp-area="Customer" asp-controller="Home" asp-action="AddToWishList" method="post" class="d-inline-block">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="productId" value="@Model.Product.Id" />
+                                <input type="hidden" name="categorySlug" value="@Model.Product.Category?.Slug" />
+                                <button type="submit" class="btn btn-wishlist shadow-sm" title="Add to Wishlist">
+                                    <i class="bi bi-heart-fill fs-5"></i>
+                                </button>
+                            </form>
+
+                        </div>
+
+                        <div class="mt-4 pt-3 border-top">
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Category" asp-route-slug="@Model.Product.Category?.Slug"
+                               class="btn btn-outline-secondary btn-back shadow-sm">
+                                <i class="bi bi-arrow-left-circle me-2"></i> Back to Products
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById("productQty");
+    const btnMinus = document.getElementById("btn-minus");
+    const btnPlus = document.getElementById("btn-plus");
+    const maxStock = parseInt(input.getAttribute("max"));
+
+    // Ensure the input value respects max stock on page load
+    if (parseInt(input.value) > maxStock) input.value = maxStock;
+    if (maxStock === 0) input.value = 0;
+
+    btnMinus.addEventListener("click", () => {
+        let val = parseInt(input.value);
+        if (val > 1) input.value = val - 1;
+    });
+
+    btnPlus.addEventListener("click", () => {
+        let val = parseInt(input.value);
+        if (val < maxStock) input.value = val + 1;
+    });
+
+    // Prevent manual input exceeding max/min
+    input.addEventListener('change', () => {
+        let val = parseInt(input.value);
+        if (isNaN(val) || val < 1) {
+            input.value = 1;
+        } else if (val > maxStock) {
+            input.value = maxStock;
+        }
+    });
+
+    // Disable buttons if out of stock
+    if (maxStock === 0) {
+        btnMinus.disabled = true;
+        btnPlus.disabled = true;
+        input.disabled = true;
+        document.querySelector('.btn-cart').disabled = true;
+        document.querySelector('.btn-cart').textContent = 'Out of Stock';
+    }
+</script>

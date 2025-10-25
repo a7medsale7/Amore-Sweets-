@@ -1,0 +1,92 @@
+﻿@model int
+
+<style>
+    /* ... (أضف الأنماط الموحدة هنا أو تأكد من تضمينها) ... */
+
+    /* نمط خاص لصفحة التأكيد */
+    .confirmation-container {
+        border: 2px dashed var(--color-secondary-light);
+        padding: 50px;
+        border-radius: 20px;
+        background-color: white;
+    }
+</style>
+<style>
+    :root {
+        --color-primary-dark: #6B4226; /* بني غامق */
+        --color-secondary-light: #F8BBD0; /* وردي فاتح */
+        --color-bg-light: #FFF8F0; /* خلفية الصفحة */
+        --color-accent-text: #E57373; /* لون وردي/أحمر مميز */
+    }
+
+    /* أنماط البطاقة الرئيسية */
+    .app-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+
+    .app-card-header {
+        background-color: var(--color-primary-dark) !important;
+        color: white;
+        border-bottom: 5px solid var(--color-secondary-light);
+    }
+
+    /* أنماط الأزرار الرئيسية */
+    .btn-brand-primary {
+        background-color: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+        .btn-brand-primary:hover {
+            background-color: #5A351D;
+            border-color: #5A351D;
+            color: white;
+        }
+
+    .text-brand-info {
+        color: var(--color-primary-dark) !important;
+        font-weight: 600;
+    }
+
+    .bg-brand-light {
+        background-color: var(--color-secondary-light) !important;
+    }
+</style>
+
+<div class="container row pt-5 justify-content-center">
+    <div class="col-lg-8 text-center confirmation-container shadow-lg">
+        <h1 class="text-brand-info mb-4 display-5 fw-bold">Order Placed Successfully!</h1>
+
+        <div class="p-3 bg-brand-light rounded mb-4">
+            <h5 class="mb-0 text-dark">
+                Your Order Number is:
+                <span class="fw-bolder text-brand-info">@Model</span>
+            </h5>
+        </div>
+
+        <img src="~/images/Sweets Confirmation.jpg"
+             alt="Sweets Confirmation"
+             width="100%"
+             class="rounded shadow-sm mt-3 mb-5"
+             style="max-height: 400px; object-fit: cover; border: 3px solid var(--color-secondary-light);" />
+
+        <p class="lead" style="color: var(--color-primary-dark);">
+            Thank you for your order! A confirmation email has been sent. <br />
+            We hope you enjoy your sweets!
+        </p>
+
+        <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-orderId="@Model"
+           class="btn btn-brand-primary px-5 py-2 mt-4">
+            <i class="bi bi-eye"></i> View Order Details
+        </a>
+
+        <a asp-area="Customer" asp-controller="Home" asp-action="Index"
+           class="btn btn-outline-secondary px-5 py-2 mt-4 ms-3">
+            <i class="bi bi-house-door"></i> Back to Home
+        </a>
+
+    </div>
+</div>

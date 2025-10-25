@@ -1,0 +1,178 @@
+﻿@model Sweets.Models.ViewData.ProductVM
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<style>
+    :root {
+        --color-primary-dark: #6B4226; /* بني غامق */
+        --color-secondary-light: #F8BBD0; /* وردي فاتح */
+        --color-accent: #FFF0D9; /* كريمي فاتح */
+    }
+
+    .form-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+    }
+
+    .card-title-header {
+        background-color: var(--color-primary-dark);
+        color: white;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+        font-weight: bold;
+    }
+
+    .input-field {
+        border: 1px solid #ddd;
+        border-radius: 8px !important;
+        transition: border-color 0.3s;
+    }
+
+        .input-field:focus {
+            border-color: var(--color-secondary-light) !important;
+            box-shadow: 0 0 0 0.25rem rgba(248, 187, 208, 0.5) !important;
+        }
+
+    .btn-action-primary {
+        background-color: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+        .btn-action-primary:hover {
+            background-color: #55341E;
+            border-color: #55341E;
+            color: white;
+        }
+
+    .section-box {
+        background-color: var(--color-accent);
+        padding: 25px;
+        border-radius: 12px;
+        border: 1px dashed var(--color-secondary-light);
+    }
+
+    .image-upload-box {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px dashed var(--color-primary-dark);
+    }
+</style>
+
+<div class="card form-card my-5">
+    <div class="card-header card-title-header py-3">
+        <h2 class="text-center mb-0">
+            <i class="bi bi-plus-circle-fill me-2"></i> Add New Product
+        </h2>
+    </div>
+
+    <div class="card-body p-4 p-md-5">
+        <form asp-action="Add" enctype="multipart/form-data" method="post" class="row g-4">
+            <div asp-validation-summary="All" class="text-danger mb-4 fw-bold"></div>
+
+            <div class="col-md-7">
+                <div class="section-box">
+                    <h5 class="text-secondary mb-4 pb-2 border-bottom border-secondary-subtle">
+                        <i class="bi bi-tag-fill me-1"></i> Product Details
+                    </h5>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Product.Name" class="form-control input-field" placeholder="Product Name" />
+                        <label asp-for="Product.Name">Name</label>
+                        <span asp-validation-for="Product.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Product.Description" class="form-label text-muted mb-2">Description</label>
+                        <textarea asp-for="Product.Description" class="form-control input-field" rows="4"></textarea>
+                        <span asp-validation-for="Product.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input asp-for="Product.Price" class="form-control input-field" placeholder="Price" />
+                                <label asp-for="Product.Price">Price</label>
+                                <span asp-validation-for="Product.Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input asp-for="Product.Discount" class="form-control input-field" placeholder="Discount" />
+                                <label asp-for="Product.Discount">Discount (%)</label>
+                                <span asp-validation-for="Product.Discount" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input asp-for="Product.StockQuantity" class="form-control input-field" placeholder="Stock Quantity" />
+                                <label asp-for="Product.StockQuantity">Stock Quantity</label>
+                                <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input asp-for="Product.Rating" class="form-control input-field" placeholder="Rating (1-5)" />
+                                <label asp-for="Product.Rating">Rating</label>
+                                <span asp-validation-for="Product.Rating" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Product.CategoryId" class="form-label fw-bold">Category</label>
+                        <select asp-for="Product.CategoryId" asp-items="Model.CategoryList" class="form-select input-field">
+                            <option value="">-- Select Category --</option>
+                        </select>
+                        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check form-switch pt-2">
+                        <input asp-for="Product.IsAvailable" class="form-check-input" type="checkbox" role="switch" />
+                        <label asp-for="Product.IsAvailable" class="form-check-label fw-bold">Is Available for Sale</label>
+                    </div>
+
+                </div>
+
+                <div class="row pt-4">
+                    <div class="col-6 col-md-4">
+                        <button type="submit" class="btn btn-action-primary form-control shadow-sm fw-bold">
+                            <i class="bi bi-save-fill me-1"></i> Save Product
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <a asp-action="Index" class="btn btn-outline-secondary border form-control shadow-sm fw-bold">
+                            <i class="bi bi-arrow-left-circle-fill me-1"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="section-box h-100">
+                    <h5 class="text-secondary mb-4 pb-2 border-bottom border-secondary-subtle">
+                        <i class="bi bi-images me-1"></i> Product Images
+                    </h5>
+                    <div class="image-upload-box text-center">
+                        <label asp-for="Product.ImageFile" class="form-label fw-bold mb-3 d-block">Upload Images (Multiple)</label>
+                        <input name="files" type="file" multiple class="form-control input-field" />
+                        <span asp-validation-for="Product.ImageFile" class="text-danger"></span>
+                        <small class="text-muted mt-2 d-block">You can select one or more images.</small>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

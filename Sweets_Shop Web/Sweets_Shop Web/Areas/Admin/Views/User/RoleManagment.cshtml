@@ -1,0 +1,158 @@
+﻿@using Sweets.Models.ViewData
+@model RoleManagmentVM
+
+<style>
+    /* 🎨 تحديد الثوابت اللونية للثيم */
+    :root {
+        --color-primary-dark: #6B4226; /* بني غامق */
+        --color-secondary-light: #F8BBD0; /* وردي فاتح */
+        --color-bg-table-alt: #FFF0D9; /* خلفية صفوف متبادلة (كريمي) */
+        --color-header-bg-bright: #FEE7D7; /* خلفية رأس الجدول */
+        --color-header-text: #6B4226; /* لون نص رأس الجدول */
+        --color-action-info: #0d6efd;
+        --color-action-danger: #dc3545;
+        --color-action-success: #198754;
+    }
+
+    body {
+        background-color: #FFF8F0;
+    }
+
+    /* تحسين البطاقة (Card) في كلتا الصفحتين */
+    .custom-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--color-secondary-light) !important;
+    }
+
+    .custom-card-header {
+        background-color: var(--color-primary-dark) !important;
+        color: #fff;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+        font-weight: 700;
+    }
+
+    /* 📊 تصميم جدول قائمة المستخدمين */
+    #tblData {
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        border: none !important;
+    }
+
+        #tblData thead {
+            background-color: var(--color-header-bg-bright);
+            font-weight: 700;
+        }
+
+        #tblData th {
+            padding: 15px 10px;
+            font-size: 0.95rem;
+            color: var(--color-header-text);
+            text-align: center;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(107, 66, 38, 0.2) !important;
+        }
+
+        #tblData tbody tr:nth-child(even) {
+            background-color: var(--color-bg-table-alt);
+        }
+
+        #tblData tbody tr:hover {
+            background-color: #FEE7D7;
+        }
+
+        #tblData td {
+            vertical-align: middle;
+            padding: 12px 10px;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+    /* ⚙️ أزرار الإجراءات */
+    .btn-actions-group .btn {
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin: 0 2px;
+    }
+
+    /* تنسيق خاص للأدوار (Roles) */
+    .role-badge {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-weight: 700;
+        display: inline-block;
+        min-width: 90px;
+    }
+
+    .bg-admin {
+        background-color: var(--color-primary-dark);
+        color: white;
+    }
+
+    .bg-customer {
+        background-color: var(--color-secondary-light);
+        color: var(--color-primary-dark);
+        border: 1px solid var(--color-primary-dark);
+    }
+</style>
+<div class="card custom-card mt-5">
+    <div class="card-header custom-card-header text-center">
+        <h2 class="text-white py-2 mb-0"><i class="bi bi-person-gear me-2"></i> Manage User Role</h2>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row">
+            <input asp-for="ApplicationUser.Id" hidden />
+            <div class="border p-4 rounded bg-light">
+                @*<div asp-validation-summary="ModelOnly"></div>*@
+
+                <div class="form-floating mb-3 col-12">
+                    <input asp-for="ApplicationUser.Name" readonly class="form-control shadow-sm border-0 bg-white" placeholder="Name" />
+                    <label asp-for="ApplicationUser.Name" class="ms-2">User Name</label>
+                </div>
+
+                <div class="form-floating mb-3 col-12">
+                    <select asp-for="ApplicationUser.Role" asp-items="@Model.RoleList" class="form-select border-primary">
+                        <option disabled selected>-- Select a Role --</option>
+                    </select>
+                    <label asp-for="ApplicationUser.Role" class="ms-2">Select New Role</label>
+                </div>
+
+                <div class="row pt-3">
+                    <div class="col-12 col-md-4 mb-2">
+                        <button type="submit" class="btn w-100 fw-bold" style="background-color: var(--color-primary-dark); color: white;">
+                            <i class="bi bi-check-circle-fill me-1"></i> Update Role
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-4 mb-2">
+                        <a asp-action="Index" class="btn btn-outline-secondary w-100 border-2 fw-bold" style="color: var(--color-primary-dark);">
+                            <i class="bi bi-arrow-left-circle-fill me-1"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+        // إظهار التنسيق المخصص عند تحميل الصفحة
+        $(document).ready(function () {
+            $('#ApplicationUser_Role').change(function () {
+                var selection = $('#ApplicationUser_Role Option:Selected').text();
+                // يمكنك إضافة منطق خاص هنا إذا لزم الأمر
+            });
+        });
+    </script>
+}

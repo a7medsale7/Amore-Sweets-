@@ -1,0 +1,216 @@
+﻿@model IEnumerable<Sweets.Models.Category>
+
+@{
+    ViewData["Title"] = "Manage Categories";
+}
+
+<style>
+    /* 🎨 تحديد الثوابت اللونية */
+    :root {
+        --color-primary-dark: #6B4226; /* بني غامق */
+        --color-secondary-light: #F8BBD0; /* وردي فاتح */
+        --color-bg-table-alt: #FFF0D9; /* خلفية صفوف متبادلة (كريمي) */
+        --color-header-bg-bright: #FEE7D7; /* 💡 تغيير لون رأس الجدول لزيادة الوضوح */
+        --color-header-text: #6B4226; /* 💡 تغيير لون نص رأس الجدول */
+        --color-action-success: #198754; /* أخضر حديث (Bootstrap success) */
+        --color-action-info: #0d6efd; /* أزرق حديث (Bootstrap primary) */
+        --color-action-danger: #dc3545; /* أحمر حديث */
+        --color-text-muted: #6c757d;
+    }
+
+    /* ➡️ تصميم الصفحة والعنوان */
+    .page-title {
+        color: var(--color-primary-dark);
+        font-weight: 800; /* أكثر جرأة */
+        margin-bottom: 25px;
+        border-bottom: 3px solid var(--color-secondary-light); /* خط سفلي أكثر بروزًا */
+        padding-bottom: 12px;
+        display: inline-block;
+        font-size: 2rem;
+    }
+
+    /* ➕ زر الإضافة */
+    .btn-add-new {
+        background-color: var(--color-secondary-light) !important;
+        color: var(--color-primary-dark) !important;
+        font-weight: 700;
+        border: 1px solid var(--color-primary-dark); /* إضافة حدود واضحة */
+        border-radius: 10px; /* حواف أكثر استدارة */
+        padding: 10px 25px;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* ظل أوضح */
+    }
+
+        .btn-add-new:hover {
+            background-color: var(--color-primary-dark) !important;
+            color: #fff !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    /* 📊 تصميم الجدول */
+    #tblData {
+        background-color: #ffffff;
+        border-radius: 15px; /* حواف أكثر استدارة للجدول ككل */
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); /* ظل أعمق */
+        border: none;
+    }
+
+        /* <thead> رأس الجدول - تم التعديل هنا لزيادة التباين */
+        #tblData thead {
+            background-color: var(--color-header-bg-bright); /* لون خلفية فاتح */
+            color: var(--color-header-text); /* لون النص بني غامق */
+            font-weight: 700;
+        }
+
+        #tblData th {
+            padding: 18px 15px; /* مسافة داخلية أكبر */
+            border-color: rgba(107, 66, 38, 0.2) !important; /* حدود بلون بني فاتح */
+            text-transform: uppercase; /* لزيادة الاحترافية */
+            font-size: 0.9rem;
+        }
+
+        /* <tbody> جسم الجدول */
+        #tblData tbody tr:nth-child(even) {
+            background-color: var(--color-bg-table-alt);
+        }
+
+        #tblData tbody tr:hover {
+            background-color: #FEE7D7; /* تأثير أوضح عند التحويم */
+        }
+
+        #tblData td {
+            vertical-align: middle;
+            padding: 15px 15px;
+            border-top: 1px solid #eee; /* فصل خفيف بين الصفوف */
+        }
+
+    /* 🖼️ صورة الفئة */
+    .category-img {
+        width: 70px; /* حجم أكبر للصورة */
+        height: 70px;
+        object-fit: cover;
+        border-radius: 12px; /* حواف مستديرة أكثر */
+        border: 3px solid var(--color-secondary-light);
+    }
+
+    /* ⚙️ أزرار الإجراءات */
+    .btn-actions-group .btn {
+        width: 40px; /* حجم أكبر للأزرار */
+        height: 40px;
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    /* تحسين شكل النصوص داخل الجدول */
+    .text-muted-no-img {
+        color: var(--color-text-muted) !important;
+    }
+
+    .status-active {
+        color: var(--color-action-success);
+        font-weight: 700;
+    }
+
+    .status-inactive {
+        color: var(--color-action-danger);
+        font-weight: 700;
+    }
+
+    .category-description {
+        max-width: 300px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--color-text-muted); /* لون رمادي لائق للوصف */
+        font-size: 0.95rem;
+    }
+
+    .item-count-badge {
+        background-color: var(--color-primary-dark);
+        color: #fff;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+</style>
+
+<div class="container p-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="page-title">
+            <i class="bi bi-tags-fill me-2"></i> Categories Management
+        </h2>
+        <a asp-action="Add" class="btn btn-add-new">
+            <i class="bi bi-plus-circle-fill me-1"></i> Add New Category
+        </a>
+    </div>
+
+    <table id="tblData" class="table table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th class="text-center">Item Count</th>
+                <th>Status</th>
+                <th>Created On</th>
+                <th>Last Update</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" alt="@item.Name" class="category-img" />
+                        }
+                        else
+                        {
+                            <span class="text-muted-no-img"><i class="bi bi-image-fill me-1"></i> No Image</span>
+                        }
+                    </td>
+                    <td><strong style="color:var(--color-primary-dark);">@item.Name</strong></td>
+                    <td class="category-description" title="@item.Description">
+                        @item.Description
+                    </td>
+                    <td class="text-center">
+                        <span class="badge rounded-pill item-count-badge">@item.ItemCount</span>
+                    </td>
+                    <td>
+                        @{
+                            // تم تأكيد الحل الصحيح لاستخراج HTML
+                            string statusHtml = item.IsActive
+                            ? $"<span class=\"status-active\"><i class=\"bi bi-check-circle-fill me-1\"></i> Active</span>"
+                            : $"<span class=\"status-inactive\"><i class=\"bi bi-x-circle-fill me-1\"></i> Inactive</span>";
+                        }
+                        @Html.Raw(statusHtml)
+                    </td>
+                    <td>@item.CreatedDate.ToString("yyyy-MM-dd")</td>
+                    <td>@(item.UpdatedDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                    <td>
+                        <div class="btn-group btn-actions-group" role="group">
+                            <a asp-action="Edit" asp-route-slug="@item.Slug" class="btn btn-sm btn-success" title="Edit">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-slug="@item.Slug" class="btn btn-sm btn-info" title="Details">
+                                <i class="bi bi-eye-fill"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-danger btn-delete" data-id="@item.Id" title="Delete">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/category.js"></script>
+}

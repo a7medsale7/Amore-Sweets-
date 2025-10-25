@@ -1,0 +1,67 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* تم إزالة margin-bottom: 60px; ليتولى flexbox في الـ _Layout التعامل مع الفوتر */
+}
+
+/* ================================== */
+/* == متغيرات Bootstrap الموحدة == */
+/* ================================== */
+:root {
+    --bs-primary: #8C4B3D; /* Rich Brown (Primary) */
+    --bs-secondary: #E3B5A7; /* Light Pink/Dusty Rose (Accent) */
+    --bs-success: #B2E0D4; /* Mint Green */
+    --bs-info: #FFEDD8; /* Creamy White */
+    --bs-dark: #5C4033; /* Darker Chocolate Brown (Tertiary/Navbar BG) */
+}
+
+/* زرار Primary (يستخدم ألوان الثيم الجديدة) */
+.btn-primary {
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+    color: var(--bs-info) !important; /* نص كريمي فاتح */
+    font-weight: 600;
+}
+
+    .btn-primary:hover {
+        background-color: var(--bs-dark) !important;
+        border-color: var(--bs-dark) !important;
+        color: white !important;
+    }
+
+/* Navbar - تم التعامل معها بالكامل في الـ Style المضمن لمرونة الثيم */
+
+/* Footer - تم التعامل معه بالكامل في الـ Style المضمن لمرونة الثيم */
+
+/* Cards */
+.card {
+    border: 1px solid var(--bs-secondary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.card-header {
+    background-color: var(--bs-secondary);
+    color: var(--bs-dark);
+    font-weight: 700;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}

@@ -1,0 +1,219 @@
+﻿@model Sweets.Models.ViewData.ProductVM
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<style>
+    /* تم استخدام نفس الأنماط الموحدة */
+    :root {
+        --color-primary-dark: #6B4226;
+        --color-secondary-light: #F8BBD0;
+        --color-accent: #FFF0D9;
+    }
+
+    .form-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+    }
+
+    .card-title-header {
+        background-color: var(--color-primary-dark);
+        color: white;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+        font-weight: bold;
+    }
+
+    .input-field {
+        border: 1px solid #ddd;
+        border-radius: 8px !important;
+        transition: border-color 0.3s;
+    }
+
+        .input-field:focus {
+            border-color: var(--color-secondary-light) !important;
+            box-shadow: 0 0 0 0.25rem rgba(248, 187, 208, 0.5) !important;
+        }
+
+    .btn-action-primary {
+        background-color: #28a745; /* استخدام الأخضر للتحديث */
+        border-color: #28a745;
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+        .btn-action-primary:hover {
+            background-color: #1e7e34;
+            border-color: #1e7e34;
+            color: white;
+        }
+
+    .section-box {
+        background-color: var(--color-accent);
+        padding: 25px;
+        border-radius: 12px;
+        border: 1px dashed var(--color-secondary-light);
+    }
+
+    .image-upload-box {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px dashed var(--color-primary-dark);
+    }
+
+    .current-images-container {
+        max-height: 250px;
+        overflow-y: auto;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        margin-bottom: 20px;
+    }
+
+    .img-thumbnail-with-delete {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+</style>
+
+<div class="card form-card my-5">
+    <div class="card-header card-title-header py-3">
+        <h2 class="text-center mb-0">
+            <i class="bi bi-pencil-square me-2"></i> Edit Product: @Model.Product.Name
+        </h2>
+    </div>
+
+    <div class="card-body p-4 p-md-5">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data" class="row g-4">
+            <input asp-for="Product.Id" type="hidden" />
+            <div asp-validation-summary="All" class="text-danger mb-4 fw-bold"></div>
+
+            <div class="col-md-7">
+                <div class="section-box">
+                    <h5 class="text-secondary mb-4 pb-2 border-bottom border-secondary-subtle">
+                        <i class="bi bi-tag-fill me-1"></i> Update Product Details
+                    </h5>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Product.Name" class="form-control input-field" />
+                        <label asp-for="Product.Name">Name</label>
+                        <span asp-validation-for="Product.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Product.Description" class="form-label text-muted mb-2">Description</label>
+                        <textarea asp-for="Product.Description" class="form-control input-field" rows="4"></textarea>
+                        <span asp-validation-for="Product.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input asp-for="Product.Price" class="form-control input-field" />
+                                <label asp-for="Product.Price">Price</label>
+                                <span asp-validation-for="Product.Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input asp-for="Product.Discount" class="form-control input-field" />
+                                <label asp-for="Product.Discount">Discount (%)</label>
+                                <span asp-validation-for="Product.Discount" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input asp-for="Product.StockQuantity" class="form-control input-field" />
+                                <label asp-for="Product.StockQuantity">Stock Quantity</label>
+                                <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input asp-for="Product.Rating" class="form-control input-field" />
+                                <label asp-for="Product.Rating">Rating</label>
+                                <span asp-validation-for="Product.Rating" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Product.CategoryId" class="form-label fw-bold">Category</label>
+                        <select asp-for="Product.CategoryId" asp-items="Model.CategoryList" class="form-select input-field">
+                            <option value="">-- Select Category --</option>
+                        </select>
+                        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check form-switch pt-2">
+                        <input asp-for="Product.IsAvailable" class="form-check-input" type="checkbox" role="switch" />
+                        <label asp-for="Product.IsAvailable" class="form-check-label fw-bold">Is Available for Sale</label>
+                    </div>
+
+                </div>
+
+                <div class="row pt-4">
+                    <div class="col-6 col-md-4">
+                        <button type="submit" class="btn btn-action-primary form-control shadow-sm fw-bold">
+                            <i class="bi bi-arrow-repeat me-1"></i> Update
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <a asp-action="Index" class="btn btn-outline-secondary border form-control shadow-sm fw-bold">
+                            <i class="bi bi-arrow-left-circle-fill me-1"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="section-box h-100">
+                    <h5 class="text-secondary mb-4 pb-2 border-bottom border-secondary-subtle">
+                        <i class="bi bi-images me-1"></i> Image Management
+                    </h5>
+
+                    <p class="fw-bold mb-2">Current Images:</p>
+                    <div class="current-images-container d-flex flex-wrap justify-content-center gap-2 mb-4">
+                        @if (Model.Product.ProductImages != null && Model.Product.ProductImages.Count > 0)
+                        {
+                            @foreach (var img in Model.Product.ProductImages)
+                            {
+                                <div class="position-relative">
+                                    <img src="@img.ImageUrl" class="img-thumbnail-with-delete" />
+                                    <a asp-action="DeleteImage" asp-route-imageId="@img.Id"
+                                       class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0"
+                                       style="width: 20px; height: 20px; font-size: 0.7rem; line-height: 1;">
+                                        <i class="bi bi-x"></i>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted fst-italic">No images uploaded.</p>
+                        }
+                    </div>
+
+                    <div class="image-upload-box text-center">
+                        <label class="form-label fw-bold mb-3 d-block">Add New Images (Optional)</label>
+                        <input name="files" type="file" multiple class="form-control input-field" />
+                        <small class="text-muted mt-2 d-block">Images added here will be appended to the product.</small>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

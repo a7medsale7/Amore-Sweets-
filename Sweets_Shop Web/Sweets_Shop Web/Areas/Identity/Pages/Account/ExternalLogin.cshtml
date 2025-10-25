@@ -1,0 +1,151 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Account Association";
+}
+
+<style>
+    /* 🎨 تحديد الثوابت اللونية للثيم */
+    :root {
+        --color-primary-dark: #6B4226; /* بني غامق */
+        --color-secondary-light: #F8BBD0; /* وردي فاتح */
+        --color-bg-light: #FFF8F0; /* خلفية الصفحة */
+        --color-text: #333;
+        --color-success: #4CAF50; /* لون أخضر للنجاح */
+    }
+
+    body {
+        background-color: var(--color-bg-light);
+        overflow-x: hidden; /* إزالة التمرير الأفقي */
+    }
+
+    /* تنسيق بطاقة الترحيب */
+    .welcome-card {
+        border-radius: 15px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        border: none;
+        background-color: white;
+        padding: 50px 30px;
+        text-align: center;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .welcome-card-icon {
+        font-size: 3.5rem;
+        color: var(--color-secondary-light);
+        margin-bottom: 20px;
+        transition: color 0.5s;
+    }
+
+    .welcome-card-title {
+        color: var(--color-primary-dark);
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .welcome-card-provider {
+        font-weight: 600;
+        color: #E57373; /* لون نص مميز */
+    }
+
+    .welcome-card-text {
+        color: var(--color-text);
+        margin-top: 20px;
+        font-size: 1.1rem;
+        min-height: 40px;
+    }
+
+    /* أيقونة التحميل الدوارة */
+    .loading-spinner {
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        border: 3px solid rgba(107, 66, 38, 0.2);
+        border-radius: 50%;
+        border-top-color: var(--color-primary-dark);
+        animation: spin 1s ease-in-out infinite;
+        -webkit-animation: spin 1s ease-in-out infinite;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    /* أيقونة اكتمال العملية (الصحة) */
+    .check-icon {
+        color: var(--color-success);
+        font-size: 1.2rem;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    /* لإخفاء الـ spinner عند ظهور علامة الصح */
+    .hidden {
+        display: none !important;
+    }
+
+    @@keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @@-webkit-keyframes spin {
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+</style>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="welcome-card">
+
+            <i class="bi bi-person-check-fill welcome-card-icon"></i>
+
+            <h1 class="welcome-card-title display-5">Linking Successful!</h1>
+
+            <h3 id="external-login-title" class="welcome-card-provider">
+                <i class="bi bi-patch-check-fill me-2"></i> @Model.ProviderDisplayName
+            </h3>
+
+            <hr class="my-4" style="border-color: var(--color-secondary-light); border-width: 2px;">
+
+            <p id="external-login-description" class="welcome-card-text">
+                <span id="loading-status" class="loading-spinner"></span>
+                <span id="loading-text">Authenticating your session via <strong class="welcome-card-provider">@Model.ProviderDisplayName</strong>. This is quick!</span>
+            </p>
+
+            <p class="welcome-card-text mt-3 text-muted" id="redirect-message">
+                Preparing to redirect you to the application dashboard in a few moments...
+            </p>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // يتم تعيين مؤقت لمدة 3000 ملي ثانية (3 ثوانٍ)
+            setTimeout(function () {
+                // 1. تغيير أيقونة التحميل إلى علامة صح
+                $('#loading-status').removeClass('loading-spinner').addClass('bi bi-check-lg check-icon');
+
+                // 2. تحديث نص الحالة
+                $('#loading-text').html('Connection **Verified!** Finalizing sign-in...');
+
+                // 3. تغيير رسالة التوجيه لتأكيد الانتهاء
+                $('#redirect-message').html('✅ **Success!** Redirecting you now...');
+
+                // 4. تغيير لون الأيقونة الرئيسية ليصبح أخضر
+                $('.welcome-card-icon').css('color', 'var(--color-success)');
+
+                // 5. التوجيه الفعلي لإتمام عملية تسجيل الدخول أو العودة للصفحة المطلوبة
+                // هذا السطر يقوم بتحديث الصفحة وتوجيه المستخدم لإتمام عملية تسجيل الدخول
+                window.location.href = "@Model.ReturnUrl";
+
+            }, 3000); // 3000 ملي ثانية = 3 ثوانٍ
+        });
+    </script>
+}
