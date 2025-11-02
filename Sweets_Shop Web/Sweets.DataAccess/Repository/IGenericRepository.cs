@@ -13,6 +13,9 @@ namespace Sweet_Shop.Repository
         int Count(Expression<Func<T, bool>>? filter = null);
         void UpdateStatus(int id, string orderStatus, string? paymentStatus = null);
         void UpdateStripePaymentID(int id, string sessionId, string paymentIntentId);
+
+        T  GetNoTracking(Expression<Func<T, bool>> filter, string? includeProperties = null);
+        void Attach(T entity); 
     }
 
 }

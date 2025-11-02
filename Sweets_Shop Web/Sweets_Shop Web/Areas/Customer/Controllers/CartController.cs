@@ -47,14 +47,33 @@ namespace Sweets_Shop_Web.Areas.Customer.Controllers
             }
 
             ShoppingCartVM.OrderHeader.OrderTotal = orderTotal;
+            var appUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+            if (appUser != null)
+            {
+                ShoppingCartVM.OrderHeader.ApplicationUser = appUser;
+                ShoppingCartVM.OrderHeader.ApplicationUserId = appUser.Id;
+                ShoppingCartVM.OrderHeader.Name = appUser.Name ?? string.Empty;
+                ShoppingCartVM.OrderHeader.PhoneNumber = appUser.PhoneNumber ?? string.Empty;
+                ShoppingCartVM.OrderHeader.StreetAddress = appUser.StreetAddress ?? string.Empty;
+                ShoppingCartVM.OrderHeader.City = appUser.City ?? string.Empty;
+                ShoppingCartVM.OrderHeader.State = appUser.State ?? string.Empty;
+                ShoppingCartVM.OrderHeader.PostalCode = appUser.PostalCode ?? string.Empty;
+            }
 
             return View(ShoppingCartVM);
         }
 
+        [Authorize]
         public IActionResult Summary()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+
             ShoppingCartVM = new()
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(
@@ -65,79 +84,108 @@ namespace Sweets_Shop_Web.Areas.Customer.Controllers
                 {
                     OrderTotal = 0
                 }
-
             };
 
-            // جلب بيانات المستخدم وتعبئة الـ OrderHeader لعرضها في النموذج (View)
-            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(c => c.Id == userId);
-            ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
-            ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-            ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
-            ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
-            ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
-            ShoppingCartVM.OrderHeader.PostalCode = ShoppingCartVM.OrderHeader.ApplicationUser.PostalCode;
+            var appUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
 
-            // حساب المجموع الكلي
+            if (appUser != null)
+            {
+                ShoppingCartVM.OrderHeader.ApplicationUser = appUser;
+                ShoppingCartVM.OrderHeader.ApplicationUserId = appUser.Id;
+                ShoppingCartVM.OrderHeader.Name = appUser.Name ?? string.Empty;
+                ShoppingCartVM.OrderHeader.PhoneNumber = appUser.PhoneNumber ?? string.Empty;
+                ShoppingCartVM.OrderHeader.StreetAddress = appUser.StreetAddress ?? string.Empty;
+                ShoppingCartVM.OrderHeader.City = appUser.City ?? string.Empty;
+                ShoppingCartVM.OrderHeader.State = appUser.State ?? string.Empty;
+                ShoppingCartVM.OrderHeader.PostalCode = appUser.PostalCode ?? string.Empty;
+            }
+            else
+            {
+                return RedirectToAction("CompleteProfile", "Account", new
+                {
+                    area = "Customer",
+                    returnUrl = Url.Action("Summary", "Cart", new { area = "Customer" })
+                });
+            }
+
+            // 💰 حساب السعر الكامل لكل منتج والمجموع النهائي
+            double total = 0;
             foreach (var item in ShoppingCartVM.ShoppingCartList)
             {
-                ShoppingCartVM.OrderHeader.OrderTotal += (double)item.Product.Price * item.Count;
+                item.Price = (double)item.Product.Price; // تأكيد أن السعر يجي من المنتج
+                total += item.Price * item.Count;
             }
+
+            ShoppingCartVM.OrderHeader.OrderTotal = total;
+
             return View(ShoppingCartVM);
         }
+
 
         [HttpPost]
         [ActionName("Summary")]
         [ValidateAntiForgeryToken]
         public IActionResult SummaryPost()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var claim = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier);
 
-            // 1. استرجاع قائمة التسوق
+            if (claim == null)
+            {
+                // لو السيشن انتهت أو المستخدم مش معروف
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+
+            var userId = claim.Value;
+
+            // 🟢 نحاول نجيب المستخدم من جدول ApplicationUser
+            var appUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+
+            if (appUser == null)
+            {
+                // 🟥 المستخدم داخل بجوجل ومش موجود في جدول ApplicationUser
+                return RedirectToAction("CompleteProfile", "Account", new
+                {
+                    area = "Customer",
+                    returnUrl = Url.Action("Summary", "Cart", new { area = "Customer" })
+                });
+            }
+
+            // ✅ تحقق من وجود بيانات المستخدم الأساسية
+            if (string.IsNullOrEmpty(appUser.City) ||
+                string.IsNullOrEmpty(appUser.StreetAddress) ||
+                string.IsNullOrEmpty(appUser.Name))
+            {
+                // 🔁 تحويل المستخدم لصفحة استكمال البيانات
+                return RedirectToAction("CompleteProfile", "Account", new
+                {
+                    area = "Customer",
+                    returnUrl = Url.Action("Summary", "Cart", new { area = "Customer" })
+                });
+            }
+
+            // 🛒 استرجاع السلة
             ShoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(
                 c => c.ApplicationUserId == userId,
                 includeProperties: "Product"
             );
 
-            // جلب بيانات المستخدم
-            var appUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+            // 🔧 إعداد بيانات الطلب
+            ShoppingCartVM.OrderHeader = new OrderHeader
+            {
+                ApplicationUserId = userId,
+                Name = appUser.Name,
+                PhoneNumber = appUser.PhoneNumber,
+                StreetAddress = appUser.StreetAddress,
+                City = appUser.City,
+                State = appUser.State,
+                PostalCode = appUser.PostalCode,
+                OrderDate = DateTime.Now,
+                OrderStatus = SD.StatusPending,
+                PaymentStatus = SD.PaymentStatusPending
+            };
 
-            // 2. ✅ الحل: تعبئة حقول العنوان المفقودة أو الفارغة من بيانات المستخدم
-            // (لضمان أن الحقول الإلزامية مثل City ليست NULL)
-            if (string.IsNullOrEmpty(ShoppingCartVM.OrderHeader.Name))
-            {
-                ShoppingCartVM.OrderHeader.Name = appUser.Name;
-            }
-            if (string.IsNullOrEmpty(ShoppingCartVM.OrderHeader.PhoneNumber))
-            {
-                ShoppingCartVM.OrderHeader.PhoneNumber = appUser.PhoneNumber;
-            }
-            if (string.IsNullOrEmpty(ShoppingCartVM.OrderHeader.StreetAddress))
-            {
-                ShoppingCartVM.OrderHeader.StreetAddress = appUser.StreetAddress;
-            }
-            if (string.IsNullOrEmpty(ShoppingCartVM.OrderHeader.City))
-            {
-                // هذا هو الكود الذي يحل مشكلة الـ 'City'
-                ShoppingCartVM.OrderHeader.City = appUser.City;
-            }
-            if (string.IsNullOrEmpty(ShoppingCartVM.OrderHeader.State))
-            {
-                ShoppingCartVM.OrderHeader.State = appUser.State;
-            }
-            if (string.IsNullOrEmpty(ShoppingCartVM.OrderHeader.PostalCode))
-            {
-                ShoppingCartVM.OrderHeader.PostalCode = appUser.PostalCode;
-            }
-
-
-            // 3. إعداد الـ OrderHeader
-            ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
-            ShoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
-            ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
-            ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
-
-            // 4. حساب الإجمالي النهائي
+            // 💰 حساب الإجمالي
             double total = 0;
             foreach (var item in ShoppingCartVM.ShoppingCartList)
             {
@@ -146,11 +194,10 @@ namespace Sweets_Shop_Web.Areas.Customer.Controllers
             }
             ShoppingCartVM.OrderHeader.OrderTotal = total;
 
-            // 5. حفظ الـ OrderHeader في قاعدة البيانات
+            // 🧾 حفظ الأوردر
             _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
             _unitOfWork.save();
 
-            // 6. حفظ تفاصيل الأوردر (OrderDetails)
             foreach (var item in ShoppingCartVM.ShoppingCartList)
             {
                 OrderDetails orderDetails = new()
@@ -164,12 +211,8 @@ namespace Sweets_Shop_Web.Areas.Customer.Controllers
             }
             _unitOfWork.save();
 
-
-            // ==========================
-            // Stripe Session Creation (بدء عملية الدفع)
-            // ==========================
+            // 💳 إعداد جلسة الدفع في Stripe
             var domain = Request.Scheme + "://" + Request.Host.Value + "/";
-
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
@@ -181,11 +224,10 @@ namespace Sweets_Shop_Web.Areas.Customer.Controllers
 
             foreach (var item in ShoppingCartVM.ShoppingCartList)
             {
-                var sessionLineItem = new SessionLineItemOptions
+                options.LineItems.Add(new SessionLineItemOptions
                 {
                     PriceData = new SessionLineItemPriceDataOptions
                     {
-                        // يجب ضرب السعر في 100 لأنه يتم التعامل بالـ Cents
                         UnitAmount = (long)(item.Price * 100),
                         Currency = "usd",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
@@ -194,14 +236,12 @@ namespace Sweets_Shop_Web.Areas.Customer.Controllers
                         }
                     },
                     Quantity = item.Count
-                };
-                options.LineItems.Add(sessionLineItem);
+                });
             }
 
             var service = new SessionService();
             Session session = service.Create(options);
 
-            // حفظ الـ Stripe IDs
             _unitOfWork.OrderHeader.UpdateStripePaymentID(
                 ShoppingCartVM.OrderHeader.Id,
                 session.Id,
@@ -209,10 +249,10 @@ namespace Sweets_Shop_Web.Areas.Customer.Controllers
             );
             _unitOfWork.save();
 
-            // التوجيه لصفحة الدفع
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
+
 
 
         public IActionResult OrderConfirmation(int id)
@@ -276,5 +316,7 @@ namespace Sweets_Shop_Web.Areas.Customer.Controllers
             TempData["success"] = "Item removed from cart";
             return RedirectToAction(nameof(Index));
         }
+
+
     }
 }

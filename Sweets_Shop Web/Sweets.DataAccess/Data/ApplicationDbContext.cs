@@ -24,6 +24,7 @@ namespace Sweet_Shop.DataAccess.Data
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Feedback> feedbacks { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
 
 

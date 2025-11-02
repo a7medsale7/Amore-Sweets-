@@ -155,22 +155,74 @@ namespace Sweets_Shop_Web.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
 $@"
 <html>
-<body style='font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px;'>
-    <div style='max-width: 600px; margin: auto; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 30px;'>
-        <h2 style='color: #333; text-align: center;'>Welcome to Sweet Shop!</h2>
-        <p style='font-size: 16px; color: #555;'>
-            Thank you for signing up. Please confirm your email address to activate your account.
-        </p>
-        <div style='text-align: center; margin: 40px 0;'>
-            <a href='{HtmlEncoder.Default.Encode(callbackUrl)}' 
-               style='background-color: #e63946; color: white; padding: 12px 25px; border-radius: 6px; text-decoration: none; font-size: 16px;'>
-               Confirm Your Account
-            </a>
-        </div>
-        <p style='font-size: 14px; color: #999; text-align: center;'>
-            If you didn’t create this account, you can safely ignore this email.
-        </p>
-    </div>
+<head>
+    <style>
+        .button-style {{
+            background-color: #FFC0CB; 
+            color: #4B0082; 
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            border: 1px solid #FFC0CB;
+            transition: all 0.3s ease;
+        }}
+        .button-style:hover {{
+            background-color: #FFB6C1; 
+        }}
+    </style>
+</head>
+<body style='font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 30px; margin: 0;'>
+    <center>
+        <table border='0' cellpadding='0' cellspacing='0' width='100%' style='table-layout: fixed;'>
+            <tr>
+                <td align='center'>
+                    <div style='max-width: 600px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;'>
+                        
+                        <div style='background-color: #FFDAB9; padding: 25px; text-align: center; border-bottom: 2px solid #FFC0CB;'>
+                            <h1 style='color: #4B0082; margin: 0; font-size: 24px;'>🍰 Sweet Shop 🍬</h1>
+                        </div>
+
+                        <div style='padding: 30px;'>
+                            <h2 style='color: #333; margin-top: 0; font-size: 22px; text-align: center;'>Confirm Your New Account</h2>
+                            
+                            <p style='font-size: 16px; color: #555; line-height: 1.6;'>
+                                Hello {Input.Name},
+                            </p>
+                            
+                            <p style='font-size: 16px; color: #555; line-height: 1.6;'>
+                                Thank you for joining the **Sweet Shop** family! To start exploring our delicious treats, please click the button below to confirm your email address:
+                            </p>
+                            
+                            <div style='text-align: center; margin: 40px 0;'>
+                                <a href='{HtmlEncoder.Default.Encode(callbackUrl)}' class='button-style'>
+                                    Activate My Account
+                                </a>
+                            </div>
+
+                            <p style='font-size: 16px; color: #555; line-height: 1.6;'>
+                                If the button above does not work, please copy and paste the following link into your web browser:
+                            </p>
+                            <p style='font-size: 12px; color: #999; word-break: break-all;'>
+                                <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{HtmlEncoder.Default.Encode(callbackUrl)}</a>
+                            </p>
+                        </div>
+                        
+                        <div style='background-color: #FFDAB9; padding: 15px; text-align: center; font-size: 12px; color: #8B4513;'>
+                            <p style='margin: 0;'>
+                                This is an automated email. If you didn’t create this account, please ignore this message.
+                            </p>
+                            <p style='margin: 5px 0 0;'>
+                                &copy; {DateTime.Now.Year} Sweet Shop. All rights reserved.
+                            </p>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </center>
 </body>
 </html>
 ");

@@ -1,4 +1,5 @@
-﻿using Sweet_Shop.Data;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Sweet_Shop.Data;
 using Sweet_Shop.DataAccess.Data;
 using Sweets.Models;
 using Sweets.Models.Models;
@@ -17,6 +18,7 @@ namespace Sweet_Shop.Repository
         public IGenericRepository<OrderDetails> OrderDetails { get; private set; }
         public IGenericRepository<ProductImage> ProductImage { get; private set; }
         public IGenericRepository<Feedback> Feedback { get; private set; }
+        public IGenericRepository<Notification> Notification { get; private set; }
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -29,6 +31,7 @@ namespace Sweet_Shop.Repository
             OrderDetails = new GenericRepository<OrderDetails>(_db);
             ProductImage = new GenericRepository<ProductImage>(_db);
             Feedback = new GenericRepository<Feedback>(_db);
+            Notification = new GenericRepository<Notification>(_db);
         }
 
 
@@ -40,5 +43,10 @@ namespace Sweet_Shop.Repository
         {
             _db.Dispose();
         }
+        public IDbContextTransaction BeginTransaction()
+        {
+            return _db.Database.BeginTransaction();
+        }
+
     }
 }

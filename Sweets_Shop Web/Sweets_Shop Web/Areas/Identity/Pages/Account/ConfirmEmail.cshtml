@@ -1,8 +1,67 @@
 ﻿@page
 @model ConfirmEmailModel
 @{
-    ViewData["Title"] = "Confirm email";
+    // Set the browser title
+    ViewData["Title"] = "Email Confirmation Status";
+
+    // Logic to determine success/failure for design purposes (Assuming standard Identity success message)
+    var isSuccess = Model.StatusMessage != null && (Model.StatusMessage.Contains("Thank you for confirming your email") || Model.StatusMessage.Contains("successfully confirmed"));
+
+    // Card styling based on status
+    var cardClass = isSuccess ? "border-success" : "border-danger";
+    var iconClass = isSuccess ? "bi-check-circle-fill text-success" : "bi-x-octagon-fill text-danger";
 }
 
-<h1>@ViewData["Title"]</h1>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="card shadow-lg @cardClass">
+
+                <div class="card-header text-center bg-white border-bottom-0 pt-4">
+                    @* The Icon *@
+                    <i class="bi @iconClass display-1 mb-3"></i>
+                    @* The Main Title *@
+                    <h1 class="card-title fw-bold">@ViewData["Title"]</h1>
+                </div>
+
+                <div class="card-body text-center pb-5">
+
+                    @* Displays the actual status message from Identity *@
+                    <partial name="_StatusMessage" model="Model.StatusMessage" />
+
+                    @if (isSuccess)
+                    {
+                        <p class="lead mt-4 mb-4">
+                            Your email has been <strong>successfully confirmed</strong>!
+                        </p>
+                        @* The enhanced instruction is here *@
+                        <p class="text-secondary mb-4">
+                            Please <strong>log in again</strong> using your email and password to access your account.
+                        </p>
+
+                        @* Success Button: Go to Login *@
+                        <a asp-page="./Login" class="btn btn-lg btn-success mt-3 shadow-sm">
+                            <i class="bi bi-box-arrow-in-right"></i> Log In Now
+                        </a>
+                    }
+                    else
+                    {
+                        <p class="text-muted mt-4 mb-4">
+                            If you are experiencing a persistent issue, please try requesting a new confirmation link or contact support.
+                        </p>
+
+                        @* Failure Button: Resend Link (Placeholder - replace with correct Identity page if needed) *@
+                        <a asp-page="./ResendEmailConfirmation" class="btn btn-lg btn-outline-primary mt-3 shadow-sm">
+                            <i class="bi bi-arrow-clockwise"></i> Resend Confirmation Link
+                        </a>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@* IMPORTANT: Link to Bootstrap Icons (or ensure they are included in your project) *@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">

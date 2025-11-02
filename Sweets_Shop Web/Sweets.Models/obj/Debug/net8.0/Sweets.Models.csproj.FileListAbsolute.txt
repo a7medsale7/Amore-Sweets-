@@ -1,12 +1,12 @@
+E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\bin\Debug\net8.0\Sweets.Models.deps.json
+E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\bin\Debug\net8.0\Sweets.Models.runtimeconfig.json
+E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\bin\Debug\net8.0\Sweets.Models.dll
+E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\bin\Debug\net8.0\Sweets.Models.pdb
 E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\obj\Debug\net8.0\Sweets.Models.csproj.AssemblyReference.cache
 E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\obj\Debug\net8.0\Sweets.Models.GeneratedMSBuildEditorConfig.editorconfig
 E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\obj\Debug\net8.0\Sweets.Models.AssemblyInfoInputs.cache
 E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\obj\Debug\net8.0\Sweets.Models.AssemblyInfo.cs
 E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\obj\Debug\net8.0\Sweets.Models.csproj.CoreCompileInputs.cache
-E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\bin\Debug\net8.0\Sweets.Models.deps.json
-E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\bin\Debug\net8.0\Sweets.Models.runtimeconfig.json
-E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\bin\Debug\net8.0\Sweets.Models.dll
-E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\bin\Debug\net8.0\Sweets.Models.pdb
 E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\obj\Debug\net8.0\Sweets.Models.dll
 E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\obj\Debug\net8.0\refint\Sweets.Models.dll
 E:\Sweets Shop(1)\Sweets_Shop Web\Sweets.Models\obj\Debug\net8.0\Sweets.Models.pdb

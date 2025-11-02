@@ -34,33 +34,65 @@ namespace Sweet_Shop.DataAccess.DbInitializer
                     _db.Database.Migrate();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // ignore errors
+                Console.WriteLine($"❌ Migration error: {ex.Message}");
             }
 
-            // ✅ Create roles if not exist
-            if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
+            // ✅ Ensure Roles exist
+            CreateRoleIfNotExists(SD.Role_Customer);
+            CreateRoleIfNotExists(SD.Role_Employee);
+            CreateRoleIfNotExists(SD.Role_Admin);
 
-                // ✅ Create Admin user (basic IdentityUser)
+            // ✅ Ensure Admin user exists
+            var adminEmail = "AmoreAdmin@gmail.com";
+            var adminPassword = "Admin123*??";
+
+            var existingAdmin = _userManager.FindByEmailAsync(adminEmail).GetAwaiter().GetResult();
+
+            if (existingAdmin == null)
+            {
                 var adminUser = new IdentityUser
                 {
-                    UserName = "Admin@gmail.com",
-                    Email = "Admin@gmail.com",
+                    UserName = adminEmail,
+                    Email = adminEmail,
                     EmailConfirmed = true
                 };
 
-                _userManager.CreateAsync(adminUser, "Admin123*??").GetAwaiter().GetResult();
-
-                var user = _db.Users.FirstOrDefault(u => u.Email == "Admin@gmail.com");
-                if (user != null)
+                var result = _userManager.CreateAsync(adminUser, adminPassword).GetAwaiter().GetResult();
+                if (result.Succeeded)
                 {
-                    _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
+                    Console.WriteLine("✅ Admin user created successfully!");
+                    _userManager.AddToRoleAsync(adminUser, SD.Role_Admin).GetAwaiter().GetResult();
                 }
+                else
+                {
+                    Console.WriteLine("❌ Failed to create admin user:");
+                    foreach (var error in result.Errors)
+                    {
+                        Console.WriteLine($" - {error.Description}");
+                    }
+                }
+            }
+            else
+            {
+                // ✅ Make sure admin has Admin role
+                var roles = _userManager.GetRolesAsync(existingAdmin).GetAwaiter().GetResult();
+                if (!roles.Contains(SD.Role_Admin))
+                {
+                    _userManager.AddToRoleAsync(existingAdmin, SD.Role_Admin).GetAwaiter().GetResult();
+                    Console.WriteLine("✅ Admin role re-assigned to existing admin user.");
+                }
+            }
+        }
+
+        // ✅ Helper Method to safely create role if it doesn't exist
+        private void CreateRoleIfNotExists(string roleName)
+        {
+            if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
+            {
+                _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
+                Console.WriteLine($"✅ Role '{roleName}' created successfully!");
             }
         }
     }

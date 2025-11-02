@@ -1,4 +1,5 @@
-﻿using Sweet_Shop.Data;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using Sweet_Shop.Data;
 using Sweets.Models;
 using Sweets.Models.Models;
 
@@ -15,7 +16,9 @@ namespace Sweet_Shop.Repository
         IGenericRepository<OrderDetails> OrderDetails { get; }
         IGenericRepository<ProductImage> ProductImage { get; }
         IGenericRepository<Feedback> Feedback { get; }
+        IGenericRepository <Notification> Notification { get; }
         void save();
+        IDbContextTransaction BeginTransaction();
 
 
     }

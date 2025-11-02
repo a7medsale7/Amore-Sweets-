@@ -114,6 +114,27 @@ namespace Sweet_Shop.Repository
                 orderFromDb.PaymentDate = DateTime.Now;
             }
         }
+        public T GetNoTracking(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        {
+            IQueryable<T> query = dbSet.AsNoTracking(); // ⬅️ نسخة بدون تتبع
+
+            query = query.Where(filter);
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
+            return query.FirstOrDefault();
+        }
+        public void Attach(T entity)
+        {
+            dbSet.Attach(entity);
+        }
 
 
 

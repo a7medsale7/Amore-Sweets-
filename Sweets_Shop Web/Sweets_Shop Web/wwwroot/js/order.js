@@ -20,11 +20,11 @@ function loadDataTable(status) {
         "ajax": {
             "url": `/Admin/Order/GetAll?status=${status}`,
             "dataSrc": function (json) {
-                // Handles both { data: [...] } and [...] structures
-                if (json.data) {
-                    return json.data;
-                }
-                return json;
+                // ✅ الفلترة: إخفاء أي طلب سعره 0
+                let dataArray = json.data ? json.data : json;
+
+                // فلترة الطلبات التي سعرها أكبر من 0 فقط
+                return dataArray.filter(order => parseFloat(order.orderTotal) > 0);
             }
         },
         "columns": [

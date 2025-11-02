@@ -1,26 +1,61 @@
 ﻿@page
 @model RegisterConfirmationModel
 @{
-    ViewData["Title"] = "Email Confirmation Sent";
+    // Title clearly states the required action
+    ViewData["Title"] = "Action Required: Check Your Inbox";
 }
 
-<div class="container mt-5">
-    <div class="card shadow-lg border-0 rounded-4 mx-auto" style="max-width: 600px;">
-        <div class="card-body text-center p-5">
-            <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png"
-                 alt="Email Sent" width="100" class="mb-4" />
-            <h2 class="text-success mb-3">Check Your Email!</h2>
-            <p class="text-muted fs-5">
-                We’ve sent a confirmation link to your email address.
-                Please open your inbox and click on the <strong>“Confirm Your Account”</strong> button
-                to activate your Sweet Shop account.
-            </p>
-            <p class="text-secondary mt-4">
-                Didn’t receive the email? <br />
-                <a asp-page="./ResendEmailConfirmation" class="btn btn-outline-primary mt-3">
-                    Resend Confirmation Email
-                </a>
-            </p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-7">
+
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-body text-center p-md-5 p-4">
+
+                    @* Main Icon: Envelope Check *@
+                    <i class="bi bi-envelope-check-fill text-primary display-2 mb-4"></i>
+
+                    <h1 class="display-5 fw-bold text-dark mb-3">
+                        @ViewData["Title"]
+                    </h1>
+
+                    @* Primary Instruction Highlight *@
+                    <div class="alert alert-success bg-light border-0 p-4 rounded-3 mb-4">
+                        <p class="lead fw-medium mb-0">
+                            We've successfully sent a confirmation link to the email address you provided.
+                        </p>
+                    </div>
+
+                    <p class="fs-5 text-secondary">
+                        Please check your inbox (and spam folder!) and click on the <strong>"Confirm Your Account"</strong> button to complete your registration and activate your account.
+                    </p>
+
+                    <hr class="my-5">
+
+                    @* Troubleshooting / Secondary Actions Section *@
+                    <h3 class="h5 text-muted mb-3">Haven't received the email yet?</h3>
+                    <p class="text-sm mb-4">
+                        If the confirmation email doesn't appear within a few minutes, you can request a new one.
+                    </p>
+
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+
+                        @* 1. Resend Confirmation Button *@
+                        <a asp-page="./ResendEmailConfirmation" class="btn btn-lg btn-outline-primary shadow-sm">
+                            <i class="bi bi-arrow-clockwise me-2"></i> Resend Confirmation Email
+                        </a>
+
+                        @* 2. New Login Button (The requested addition) *@
+                        <a asp-page="./Login" class="btn btn-lg btn-secondary shadow-sm">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Go to Login
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
